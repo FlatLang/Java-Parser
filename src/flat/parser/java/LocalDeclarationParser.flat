@@ -1,0 +1,56 @@
+package flat/parser/java
+
+import flat/parser
+import flat/parser/matchers
+import flat/ast/LocalDeclarationNode
+import flat/compiler/models/Token
+import flat/annotations/LetModifier
+import flat/annotations/VarModifier
+
+import flat/extensions/SyntaxStringFunctions
+
+data class extends ParserBase {
+  override ParserBase[] childParsers => [
+    AssignmentParser()
+  ]
+
+  override lazy TokenPattern pattern => XorTokenPattern([
+    GroupTokenPattern([
+      GroupTokenPattern([
+        SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "type_name"),
+        Patterns.genericParameters,
+      ]),
+      GroupTokenPattern([
+        SingleTokenPattern(type: Token.Type.SYMBOL, value: "[", label: "type_bracket_start"),
+        SingleTokenPattern(type: Token.Type.SYMBOL, value: "]", label: "type_bracket_end")
+      ], repeat: true, label: "brackets"),
+      IdentifierParser().pattern,
+    ]),
+    GroupTokenPattern([
+      GroupTokenPattern([
+        SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "type_name"),
+        Patterns.genericParameters,
+      ]),
+      IdentifierParser().pattern,
+      GroupTokenPattern([
+        SingleTokenPattern(type: Token.Type.SYMBOL, value: "[", label: "type_bracket_start"),
+        SingleTokenPattern(type: Token.Type.SYMBOL, value: "]", label: "type_bracket_end")
+      ], repeat: true, label: "brackets"),
+    ]),
+    GroupTokenPattern([
+      GroupTokenPattern([
+        SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "type_name"),
+        Patterns.genericParameters,
+      ]),
+      IdentifierParser().pattern,
+    ]),
+  ], label: "local_declaration")
+
+  override public generateNode() -> LocalDeclarationNode {
+    return LocalDeclarationNode(
+      type: lastMatch.getValue("type_name"),
+      name: lastMatch.getValue("name"),
+      arrayDimensions: lastMatch.getMatches("brackets").count
+    )
+  }
+}

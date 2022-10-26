@@ -1,0 +1,18 @@
+package flat/parser/java
+
+import flat/parser
+import flat/parser/matchers
+import flat/ast/AnnotationNode
+import flat/compiler/models/Token
+
+import flat/extensions/SyntaxStringFunctions
+
+data class extends ParserBase {
+  override lazy TokenPattern pattern => NodeTokenPattern([
+    ModifierParser(),
+  ], exact: true, metadata: true, label: "annotation")
+
+  override public generateNode() -> AnnotationNode {
+    return lastMatch.getMatch<NodeTokenMatch>("annotation").generateNode()
+  }
+}

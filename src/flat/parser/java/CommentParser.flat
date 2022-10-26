@@ -1,0 +1,18 @@
+package flat/parser/java
+
+import flat/parser
+import flat/parser/matchers
+import flat/ast/CommentNode
+import flat/compiler/models/Token
+
+data class extends ParserBase {
+  override lazy TokenPattern pattern => SingleTokenPattern(type: Token.Type.COMMENT, label: "comment", metadata: true)
+
+  override public generateNode() -> CommentNode {
+    let value = lastMatch.getValue("comment")
+
+    return CommentNode(
+      value: value
+    )
+  }
+}

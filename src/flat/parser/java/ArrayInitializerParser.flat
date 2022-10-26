@@ -1,0 +1,47 @@
+package flat/parser/java
+
+import flat/parser
+import flat/parser/matchers
+import flat/ast/ArrayInitializerNode
+import flat/compiler/models/Token
+import flat/compiler/models/SyntaxTokenFunctions
+
+data class extends ParserBase {
+  override ParserBase[] childParsers => Array():addAll([
+    DotAccessParser(),
+    AssignmentParser(),
+    ArrayAccessParser()
+  ])
+
+  override lazy TokenPattern pattern => GroupTokenPattern([
+    SingleTokenPattern(type: Token.Type.SYMBOL, value: "["),
+    GroupTokenPattern([
+      NodeTokenPattern(indexParsers, label: "initializer_value"),
+      GroupTokenPattern([
+        SingleTokenPattern(type: Token.Type.SYMBOL, value: ","),
+        NodeTokenPattern(indexParsers, label: "initializer_value")
+      ], optional: true, repeat: true),
+      SingleTokenPattern(type: Token.Type.SYMBOL, value: ",", optional: true),
+    ], optional: true, label: "initializer_values"),
+    SingleTokenPattern(type: Token.Type.SYMBOL, value: "]")
+  ])
+
+  let ParserBase[] indexParsers => [
+    AnnotationParser(),
+    FunctionCallParser(),
+    IdentifierParser(),
+    LiteralParser(),
+    LambdaParser(),
+    ArrayInitializerParser()
+  ]
+
+  override public generateNode() -> ArrayInitializerNode {
+    return ArrayInitializerNode()
+  }
+
+  override public getChildNodeTokenMatches() => NodeTokenMatch[] {
+    if (let args = lastMatch.getMatch<GroupTokenMatch>("initializer_values")) {
+      return (NodeTokenMatch[])args.tokenMatches.filter({ _.label == "initializer_value" })
+    }
+  }
+}

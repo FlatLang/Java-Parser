@@ -1,0 +1,41 @@
+package flat/parser/java
+
+import flat/parser
+import flat/parser/matchers
+import flat/ast/LiteralNode
+import flat/compiler/models/Token
+
+data class extends ParserBase {
+  override ParserBase[] childParsers => Array():addAll([
+    DotAccessParser(),
+    TernaryParser(),
+    BinaryOperationParser(),
+  ])
+
+  override lazy TokenPattern pattern => XorTokenPattern([
+    SingleTokenPattern(type: Token.Type.STRING),
+    SingleTokenPattern(type: Token.Type.CHAR),
+    SingleTokenPattern(type: Token.Type.INTEGER),
+    SingleTokenPattern(type: Token.Type.BOOL),
+    SingleTokenPattern(type: Token.Type.NULL)
+  ], exact: true)
+
+  override public generateNode() -> LiteralNode {
+    let token = lastMatch.tokens.first
+
+    var Int literalType
+
+    match token.type {
+      Token.Type.STRING => literalType = LiteralNode.Type.STRING
+      Token.Type.CHAR => literalType = LiteralNode.Type.CHAR
+      Token.Type.INTEGER => literalType = LiteralNode.Type.INTEGER
+      Token.Type.BOOL => literalType = LiteralNode.Type.BOOL
+      Token.Type.NULL => literalType = LiteralNode.Type.NULL
+    }
+
+    return LiteralNode(
+      value: token.value,
+      literalType: literalType
+    )
+  }
+}

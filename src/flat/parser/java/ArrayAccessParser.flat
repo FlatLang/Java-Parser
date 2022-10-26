@@ -1,0 +1,48 @@
+package flat/parser/java
+
+import flat/parser
+import flat/parser/matchers
+import flat/ast/ArrayAccessNode
+import flat/compiler/models/Token
+import flat/log/Logger
+
+data class extends ParserBase {
+  static Logger log = Logger(ArrayAccessParser.class)
+
+  override ParserBase[] childParsers => Array():addAll([
+    DotAccessParser(),
+    TernaryParser(),
+    AssignmentParser(),
+    ArrayAccessParser(),
+    BinaryOperationParser(),
+    UnaryOperationParser(),
+  ])
+
+  override lazy TokenPattern pattern => GroupTokenPattern([
+    SingleTokenPattern(type: Token.Type.SYMBOL, value: "["),
+    NodeTokenPattern(indexParsers, label: "index"),
+    SingleTokenPattern(type: Token.Type.SYMBOL, value: "]")
+  ], label: "array_access")
+
+  ParserBase[] indexParsers => [
+    AnnotationParser(),
+    FunctionCallParser(),
+    IdentifierParser(),
+    ArrayInstantiationParser(),
+    ArrayInitializerParser(),
+    LiteralParser(),
+    UnaryOperationParser(),
+    CastParser(),
+    PriorityParser(),
+  ]
+
+  override public generateNode() -> ArrayAccessNode {
+    return ArrayAccessNode()
+  }
+
+  override public getChildNodeTokenMatches() => NodeTokenMatch[] {
+    if (let args = lastMatch.getMatch<GroupTokenMatch>("array_access")) {
+      return (NodeTokenMatch[])args.tokenMatches.filter({ _.label == "index" })
+    }
+  }
+}

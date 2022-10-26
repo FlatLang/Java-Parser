@@ -1,0 +1,51 @@
+package flat/parser/java
+
+import flat/parser
+import flat/parser/matchers
+import flat/ast/ParameterNode
+import flat/compiler/models/Token
+
+data class extends ParserBase {
+  override ParserBase[] childParsers => Array():addAll([
+    AssignmentParser()
+  ])
+
+  override lazy TokenPattern pattern => XorTokenPattern([
+    GroupTokenPattern([
+      SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "type"),
+      Patterns.genericParameters,
+      GroupTokenPattern([
+        SingleTokenPattern(type: Token.Type.SYMBOL, value: "[", label: "bracket_start"),
+        SingleTokenPattern(type: Token.Type.SYMBOL, value: "]", label: "bracket_end")
+      ], repeat: true),
+      SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "name")
+    ]),
+    GroupTokenPattern([
+      SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "type"),
+      Patterns.genericParameters,
+      SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "name"),
+      GroupTokenPattern([
+        SingleTokenPattern(type: Token.Type.SYMBOL, value: "[", label: "bracket_start"),
+        SingleTokenPattern(type: Token.Type.SYMBOL, value: "]", label: "bracket_end")
+      ], repeat: true),
+    ]),
+    GroupTokenPattern([
+      SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "type"),
+      Patterns.genericParameters,
+      SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "name"),
+    ]),
+  ], label: "parameter")
+
+  override public generateNode() -> ParameterNode {
+    let type = lastMatch.getValue("type")
+    let name = lastMatch.getValue("name")
+    let bracketCount = lastMatch.getValues("bracket_start").count
+
+    return ParameterNode(
+      type: type,
+      name: name,
+      arrayDimensions: bracketCount,
+      requireName: lastMatch.getValue("require_name") != null
+    )
+  }
+}

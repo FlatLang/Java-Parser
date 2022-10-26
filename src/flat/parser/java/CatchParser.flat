@@ -1,0 +1,36 @@
+package flat/parser/java
+
+import flat/parser
+import flat/parser/matchers
+import flat/ast/CatchNode
+import flat/compiler/models/Token
+import flat/log/Logger
+
+data class extends ParserBase {
+  static Logger log = Logger(CatchParser.class)
+
+  override ParserBase[] childParsers => Array()
+    :addAll(LocalScopeParser().valueParsers)
+
+  override lazy TokenPattern pattern => GroupTokenPattern([
+    SingleTokenPattern(type: Token.Type.IDENTIFIER, value: "catch"),
+    SingleTokenPattern(type: Token.Type.SYMBOL, value: "("),
+    NodeTokenPattern(parameterParsers, label: "parameter"),
+    SingleTokenPattern(type: Token.Type.SYMBOL, value: ")")
+  ], exact: true, label: "parameters")
+
+  let ParserBase[] parameterParsers => [
+    AnnotationParser(),
+    ParameterParser(),
+  ]
+
+  override public generateNode() -> CatchNode {
+    return CatchNode()
+  }
+
+  override public getChildNodeTokenMatches() => NodeTokenMatch[] {
+    if (let params = lastMatch.getMatch<GroupTokenMatch>("parameters")) {
+      return (NodeTokenMatch[])params.tokenMatches.filter({ _.label == "parameter" })
+    }
+  }
+}

@@ -1,0 +1,38 @@
+package flat/parser/java
+
+import flat/parser
+import flat/parser/matchers
+import flat/ast/CastNode
+import flat/compiler/models/Token
+
+data class extends ParserBase {
+  override ParserBase[] childParsers => Array():addAll([
+    IdentifierParser(),
+    ArrayInstantiationParser(),
+    ArrayInitializerParser(),
+    LiteralParser(),
+    FunctionCallParser(),
+    UnaryOperationParser(),
+    PriorityParser(),
+  ])
+
+  override lazy TokenPattern pattern => GroupTokenPattern([
+    SingleTokenPattern(type: Token.Type.SYMBOL, value: "("),
+    GroupTokenPattern([
+      SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "type_name"),
+      Patterns.genericParameters,
+      GroupTokenPattern([
+        SingleTokenPattern(type: Token.Type.SYMBOL, value: "[", label: "bracket_start"),
+        SingleTokenPattern(type: Token.Type.SYMBOL, value: "]", label: "bracket_end")
+      ], repeat: true, optional: true, label: "array_brackets")
+    ], label: "type"),
+    SingleTokenPattern(type: Token.Type.SYMBOL, value: ")")
+  ], label: "cast")
+
+  override public generateNode() -> CastNode {
+    return CastNode(
+      type: lastMatch.getValue("type_name"),
+      arrayDimensions: lastMatch.getMatches("array_brackets").count
+    )
+  }
+}

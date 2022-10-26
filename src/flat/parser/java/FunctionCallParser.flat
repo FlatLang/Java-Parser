@@ -1,0 +1,59 @@
+package flat/parser/java
+
+import flat/parser
+import flat/parser/matchers
+import flat/ast/FunctionCallNode
+import flat/compiler/models/Token
+import flat/compiler/models/SyntaxTokenFunctions
+
+data class extends ParserBase {
+  override ParserBase[] childParsers => Array():addAll([
+    DotAccessParser(),
+    TernaryParser(),
+    AssignmentParser(),
+    ArrayAccessParser(),
+    BinaryOperationParser(),
+    UnaryOperationParser(),
+  ])
+
+  override lazy TokenPattern pattern => GroupTokenPattern([
+    IdentifierParser().pattern,
+    Patterns.genericArguments,
+    SingleTokenPattern(type: Token.Type.SYMBOL, value: "("),
+    GroupTokenPattern([
+      NodeTokenPattern(argumentParsers, label: "argument"),
+      GroupTokenPattern([
+        SingleTokenPattern(type: Token.Type.SYMBOL, value: ","),
+        NodeTokenPattern(argumentParsers, label: "argument")
+      ], optional: true, repeat: true),
+      SingleTokenPattern(type: Token.Type.SYMBOL, value: ",", optional: true),
+    ], label: "arguments", optional: true),
+    SingleTokenPattern(type: Token.Type.SYMBOL, value: ")")
+  ])
+
+  ParserBase[] argumentParsers => [
+    AnnotationParser(),
+    FunctionCallParser(),
+    LocalDeclarationParser(),
+    IdentifierParser(),
+    LiteralParser(),
+    LambdaParser(),
+    ArrayInitializerParser(),
+    ArrayInstantiationParser(),
+    UnaryOperationParser(),
+    CastParser(),
+    PriorityParser(),
+  ]
+
+  override public generateNode() -> FunctionCallNode {
+    return FunctionCallNode(
+      name: lastMatch.getValue("name")
+    )
+  }
+
+  override public getChildNodeTokenMatches() => NodeTokenMatch[] {
+    if (let args = lastMatch.getMatch<GroupTokenMatch>("arguments")) {
+      return (NodeTokenMatch[])args.tokenMatches.filter({ _.label == "argument" })
+    }
+  }
+}

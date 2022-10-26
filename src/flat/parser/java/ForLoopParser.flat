@@ -1,0 +1,53 @@
+package flat/parser/java
+
+import flat/parser
+import flat/parser/matchers
+import flat/ast/ForLoopNode
+import flat/compiler/models/Token
+import flat/log/Logger
+
+data class extends ParserBase implements ScopeableParser {
+  static Logger log = Logger(ForLoopParser.class)
+
+  override lazy TokenPattern pattern => GroupTokenPattern([
+    SingleTokenPattern(type: Token.Type.IDENTIFIER, value: "for"),
+    SingleTokenPattern(type: Token.Type.SYMBOL, value: "("),
+    NodeTokenPattern(initializerParsers, label: "initializer", optional: true),
+    SingleTokenPattern(type: Token.Type.SYMBOL, value: ";"),
+    NodeTokenPattern(conditionParsers, label: "condition", optional: true),
+    SingleTokenPattern(type: Token.Type.SYMBOL, value: ";"),
+    NodeTokenPattern(incrementorParsers, label: "incrementor", optional: true),
+    SingleTokenPattern(type: Token.Type.SYMBOL, value: ")"),
+    NodeTokenPattern(LocalScopeParser().valueParsers, label: "for_loop_body"),
+  ])
+
+  let ParserBase[] initializerParsers => [
+    AnnotationParser(),
+    LocalDeclarationParser(),
+    IdentifierParser(),
+  ]
+
+  let ParserBase[] conditionParsers => [
+    AnnotationParser(),
+    IdentifierParser(),
+    LiteralParser(),
+    CastParser(),
+    PriorityParser(),
+    FunctionCallParser(),
+    UnaryOperationParser(),
+  ]
+
+  let ParserBase[] incrementorParsers => [
+    AnnotationParser(),
+    IdentifierParser(),
+    LiteralParser(),
+    CastParser(),
+    PriorityParser(),
+    FunctionCallParser(),
+    UnaryOperationParser(),
+  ]
+
+  override public generateNode() -> ForLoopNode {
+    return ForLoopNode()
+  }
+}

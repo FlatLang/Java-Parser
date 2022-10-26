@@ -1,0 +1,104 @@
+package flat/parser/java
+
+import flat/parser
+import flat/parser/matchers
+import flat/ast/FunctionNode
+import flat/compiler/models/Token
+import flat/compiler/models/SyntaxTokenFunctions
+import flat/log/Logger
+
+data class extends ParserBase implements ScopeableParser {
+  static Logger log = Logger(ConstructorParser.class)
+
+  override lazy TokenPattern pattern => GroupTokenPattern([
+    IdentifierParser().pattern,
+    SingleTokenPattern(type: Token.Type.SYMBOL, value: "("),
+    GroupTokenPattern([
+      NodeTokenPattern(parameterParsers, label: "parameter"),
+      GroupTokenPattern([
+        SingleTokenPattern(type: Token.Type.SYMBOL, value: ","),
+        NodeTokenPattern(parameterParsers, label: "parameter")
+      ], optional: true, repeat: true),
+      SingleTokenPattern(type: Token.Type.SYMBOL, value: ",", optional: true),
+    ], optional: true, label: "function_parameters"),
+    SingleTokenPattern(type: Token.Type.SYMBOL, value: ")"),
+    GroupTokenPattern([
+      SingleTokenPattern(type: Token.Type.IDENTIFIER, value: "throws"),
+      Patterns.type,
+      GroupTokenPattern([
+        SingleTokenPattern(type: Token.Type.SYMBOL, value: ","),
+        Patterns.type,
+      ], optional: true, repeat: true),
+      SingleTokenPattern(type: Token.Type.SYMBOL, value: ",", optional: true),
+    ], optional: true),
+    GroupTokenPattern([
+      SingleTokenPattern(type: Token.Type.SYMBOL, value: "{"),
+      NodeGroupTokenPattern(
+        LocalScopeParser().valueParsers,
+        optional: true,
+        label: "function_body_scope",
+        statementEndToken: Token(type: Token.Type.SYMBOL, value: ";")
+      ),
+      SingleTokenPattern(type: Token.Type.SYMBOL, value: "}")
+    ])
+  ], label: "function")
+
+  let ParserBase[] parameterParsers => [
+    AnnotationParser(),
+    ParameterParser(),
+  ]
+
+  visible ParserBase[] arrowExpressionValues => [
+    AnnotationParser(),
+    ThrowParser(),
+    IfParser(),
+    TryParser(),
+    CatchParser(),
+    ElseParser(),
+    ReturnParser(),
+    LiteralParser(),
+    SwitchParser(),
+    WhileLoopParser(),
+    ForLoopParser(),
+    ForEachLoopParser(),
+    ContinueParser(),
+    BreakParser(),
+    LocalDeclarationParser(),
+    FunctionCallParser(),
+    IdentifierParser(),
+    ArrayInstantiationParser(),
+    ArrayInitializerParser(),
+    UnaryOperationParser(),
+    CastParser(),
+    PriorityParser(),
+    LambdaParser()
+  ]
+
+  override public generateNode() -> FunctionNode {
+    let type = lastMatch.getValue("type_name")
+    let name = lastMatch.getValue("name")
+    let bracketCount = lastMatch.getValues("bracket_start").count
+
+    return FunctionNode(
+      type: type,
+      name: name,
+      arrayDimensions: bracketCount
+    )
+  }
+
+  override public getChildNodeTokenMatches() => NodeTokenMatch[] {
+    let matches = NodeTokenMatch[]
+
+    if (let params = lastMatch.getMatch<GroupTokenMatch>("function_parameters")) {
+      matches.addAll(params.tokenMatches.filter({ _.label == "parameter" }))
+    }
+    if (let arrowExpression = lastMatch.getMatch<NodeTokenMatch>("function_arrow_expression")) {
+      matches.add(arrowExpression)
+    }
+    if (let scope = lastMatch.getMatch<NodeGroupTokenMatch>("function_body_scope")) {
+      matches.addAll(scope.getChildNodeMatches())
+    }
+
+    return matches
+  }
+}

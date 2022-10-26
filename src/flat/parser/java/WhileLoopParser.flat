@@ -1,0 +1,38 @@
+package flat/parser/java
+
+import flat/parser
+import flat/parser/matchers
+import flat/ast/WhileLoopNode
+import flat/compiler/models/Token
+import flat/log/Logger
+
+data class extends ParserBase implements ScopeableParser {
+  static Logger log = Logger(WhileLoopParser.class)
+
+  override lazy TokenPattern pattern => GroupTokenPattern([
+    SingleTokenPattern(type: Token.Type.IDENTIFIER, value: "while"),
+    NodeTokenPattern(conditionParsers, label: "condition"),
+    NodeTokenPattern(LocalScopeParser().valueParsers, label: "while_body"),
+  ], label: "while_loop")
+
+  ParserBase[] conditionParsers => [
+    AnnotationParser(),
+    FunctionCallParser(),
+    LocalDeclarationParser(),
+    IdentifierParser(),
+    LiteralParser(),
+    LambdaParser(),
+    ArrayInitializerParser(),
+    UnaryOperationParser(),
+    CastParser(),
+    PriorityParser(),
+  ]
+
+  override public generateNode() -> WhileLoopNode {
+    return WhileLoopNode()
+  }
+
+  override public getChildNodeTokenMatches() => NodeTokenMatch[] {
+    return lastMatch.getMatches<NodeTokenMatch>("condition")
+  }
+}

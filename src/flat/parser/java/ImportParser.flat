@@ -1,0 +1,33 @@
+package flat/parser/java
+
+import flat/parser
+import flat/parser/matchers
+import flat/ast/ImportNode
+import flat/compiler/models/Token
+
+import flat/extensions/SyntaxStringFunctions
+
+data class extends ParserBase {
+  override lazy TokenMatcher matcher => pattern.getMatcher()
+
+  override lazy TokenPattern pattern => GroupTokenPattern([
+    SingleTokenPattern(type: Token.Type.IDENTIFIER, value: "import"),
+    SingleTokenPattern(type: Token.Type.IDENTIFIER, value: "static", optional: true, label: "static"),
+    SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "import_location_component"),
+    GroupTokenPattern([
+      SingleTokenPattern(type: Token.Type.SYMBOL, value: ".", label: "import_location_component"),
+      SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "import_location_component")
+    ], repeat: true, optional: true, greedy: false),
+    GroupTokenPattern([
+      SingleTokenPattern(type: Token.Type.SYMBOL, value: ".", label: "import_location_component"),
+      SingleTokenPattern(type: Token.Type.SYMBOL, value: "*", label: "import_location_component")
+    ], optional: true),
+  ])
+
+  override public generateNode() -> ImportNode {
+    return ImportNode(
+      location: lastMatch.getValues("import_location_component").join(),
+      staticImport: lastMatch.getValues("static").isNotEmpty
+    )
+  }
+}

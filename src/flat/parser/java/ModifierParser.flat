@@ -1,0 +1,54 @@
+package flat/parser/java
+
+import flat/parser
+import flat/parser/matchers
+import flat/annotations/java
+import flat/ast
+import flat/compiler/models/Token
+
+import flat/extensions/SyntaxStringFunctions
+
+data class extends ParserBase {
+  override lazy TokenPattern pattern => XorTokenPattern([
+    GroupTokenPattern([
+      PreconditionTokenPattern(parentTypes: PublicModifier.allowedNodeContexts),
+      SingleTokenPattern(type: Token.Type.IDENTIFIER, values: PublicModifier.aliases, label: "alias"),
+    ]),
+    GroupTokenPattern([
+      PreconditionTokenPattern(parentTypes: PrivateModifier.allowedNodeContexts),
+      SingleTokenPattern(type: Token.Type.IDENTIFIER, values: PrivateModifier.aliases, label: "alias"),
+    ]),
+    GroupTokenPattern([
+      PreconditionTokenPattern(parentTypes: ProtectedModifier.allowedNodeContexts),
+      SingleTokenPattern(type: Token.Type.IDENTIFIER, values: ProtectedModifier.aliases, label: "alias"),
+    ]),
+    GroupTokenPattern([
+      PreconditionTokenPattern(parentTypes: StaticModifier.allowedNodeContexts),
+      SingleTokenPattern(type: Token.Type.IDENTIFIER, values: StaticModifier.aliases, label: "alias"),
+    ]),
+    GroupTokenPattern([
+      PreconditionTokenPattern(parentTypes: NativeModifier.allowedNodeContexts),
+      SingleTokenPattern(type: Token.Type.IDENTIFIER, values: NativeModifier.aliases, label: "alias"),
+    ]),
+    GroupTokenPattern([
+      PreconditionTokenPattern(parentTypes: AbstractModifier.allowedNodeContexts),
+      SingleTokenPattern(type: Token.Type.IDENTIFIER, values: AbstractModifier.aliases, label: "alias"),
+    ]),
+    GroupTokenPattern([
+      PreconditionTokenPattern(parentTypes: FinalModifier.allowedNodeContexts),
+      SingleTokenPattern(type: Token.Type.IDENTIFIER, values: FinalModifier.aliases, label: "alias"),
+    ]),
+  ], exact: true, metadata: true)
+
+  override public generateNode() -> AnnotationNode => null {
+    let alias = lastMatch.getValue("alias")
+
+    if (PublicModifier.aliases.any({ _ == alias})) return PublicModifier(aliasUsed: alias)
+    if (PrivateModifier.aliases.any({ _ == alias})) return PrivateModifier(aliasUsed: alias)
+    if (ProtectedModifier.aliases.any({ _ == alias})) return ProtectedModifier(aliasUsed: alias)
+    if (StaticModifier.aliases.any({ _ == alias})) return StaticModifier(aliasUsed: alias)
+    if (NativeModifier.aliases.any({ _ == alias})) return NativeModifier(aliasUsed: alias)
+    if (AbstractModifier.aliases.any({ _ == alias})) return AbstractModifier(aliasUsed: alias)
+    if (FinalModifier.aliases.any({ _ == alias})) return FinalModifier(aliasUsed: alias)
+  }
+}

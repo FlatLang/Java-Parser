@@ -1,0 +1,55 @@
+package flat/parser/java
+
+import flat/parser
+import flat/parser/matchers
+import flat/ast/LocalScopeNode
+import flat/compiler/models/Token
+
+data class extends ParserBase implements ScopeableParser {
+  visible ParserBase[] valueParsers => [
+    AnnotationParser(),
+    ThrowParser(),
+    IfParser(),
+    TryParser(),
+    CatchParser(),
+    ElseParser(),
+    ReturnParser(),
+    LiteralParser(),
+    SwitchParser(),
+    WhileLoopParser(),
+    ForLoopParser(),
+    ForEachLoopParser(),
+    ContinueParser(),
+    BreakParser(),
+    LocalDeclarationParser(),
+    FunctionCallParser(),
+    IdentifierParser(),
+    ArrayInstantiationParser(),
+    ArrayInitializerParser(),
+    UnaryOperationParser(),
+    CastParser(),
+    PriorityParser(),
+    LocalScopeParser(),
+  ]
+
+  override lazy TokenPattern pattern => GroupTokenPattern([
+    SingleTokenPattern(type: Token.Type.SYMBOL, value: "{"),
+    NodeGroupTokenPattern(
+      valueParsers,
+      optional: true,
+      label: "scope_body_contents",
+      statementEndToken: Token(type: Token.Type.SYMBOL, value: ";")
+    ),
+    SingleTokenPattern(type: Token.Type.SYMBOL, value: "}")
+  ], label: "local_scope")
+
+  override public generateNode() -> LocalScopeNode {
+    return LocalScopeNode()
+  }
+
+  override public getChildNodeTokenMatches() => NodeTokenMatch[] {
+    if (let body = lastMatch.getMatch<NodeGroupTokenMatch>("scope_body_contents")) {
+      return body.getChildNodeMatches()
+    }
+  }
+}

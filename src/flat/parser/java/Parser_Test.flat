@@ -1,0 +1,117 @@
+package flat/parser/java
+
+import flat/parser
+import flat/parser/matchers
+import flat/ast
+import flat/annotations
+import flat/compiler/models/Token
+import flat/lexer/Lexer
+import flat/io/File
+
+testable class {
+  async test `can parse function call with complex lambda`() {
+    let source = "|
+      class Test {
+        func() {
+          source.forEach((Pair<String, Object> pair) -> {
+            if (!dest.containsKey(pair.key)) {
+              dest[pair.key] = pair.value
+            }
+
+            if (pair.value.class.isOfType(HashMap.class)) {
+              HashMap<String, Object> hashmap = (HashMap)pair.value
+              HashMap<String, Object> existingHashmap = (HashMap)dest[pair.key]
+              merge(hashmap, existingHashmap)
+            } else {
+              dest[pair.key] = pair.value
+            }
+          })
+        }
+      }
+      |"
+
+    let file = File("Test.flat")
+    let stream = Parser().parse(FileParser(), ParseContext(file: file), Lexer().lex(source):emit("start"))
+
+    let nodes = Node[]
+
+    stream.on<Node>("data", { nodes.add(_) })
+    stream.emit("start")
+    stream.waitFor("close")
+
+    expect(nodes).toBe([
+      FileNode(file: file),
+      ClassNode(name: "Test", implicitName: false),
+      FunctionNode(name: "func", type: "HashMap"),
+      IdentifierNode(name: "source"), DotAccessNode(), FunctionCallNode(name: "forEach"), LambdaNode(), LocalScopeNode(),
+        IfNode(), PriorityNode(),
+          UnaryOperationNode(operator: "!"), IdentifierNode(name: "dest"), DotAccessNode(), FunctionCallNode(name: "containsKey"),
+            IdentifierNode(name: "pair"), DotAccessNode(), IdentifierNode(name: "key"),
+        LocalScopeNode(),
+          IdentifierNode(name: "dest"), ArrayAccessNode(), IdentifierNode(name: "pair"), DotAccessNode(), IdentifierNode(name: "key"),
+            AssignmentNode(),
+            IdentifierNode(name: "pair"), DotAccessNode(), IdentifierNode(name: "value"),
+        IfNode(), PriorityNode(),
+          IdentifierNode(name: "pair"), DotAccessNode(), IdentifierNode(name: "value"), DotAccessNode(), IdentifierNode(name: "class"), DotAccessNode(), FunctionCallNode(name: "isOfType"),
+            IdentifierNode(name: "HashMap"), DotAccessNode(), IdentifierNode(name: "class"),
+        LocalScopeNode(),
+          LocalDeclarationNode(type: "HashMap", name: "hashmap"),
+            AssignmentNode(),
+            CastNode(type: "HashMap"), IdentifierNode(name: "pair"), DotAccessNode(), IdentifierNode(name: "value"),
+          LocalDeclarationNode(type: "HashMap", name: "existingHashmap"),
+            AssignmentNode(),
+            CastNode(type: "HashMap"), IdentifierNode(name: "dest"), ArrayAccessNode(), IdentifierNode(name: "pair"), DotAccessNode(), IdentifierNode(name: "key"),
+          FunctionCallNode(name: "merge"), IdentifierNode(name: "hashmap"),
+        ElseNode(),
+          LocalScopeNode(), IdentifierNode(name: "dest"), ArrayAccessNode(), IdentifierNode(name: "pair"), DotAccessNode(), IdentifierNode(name: "key"),
+          AssignmentNode(),
+          IdentifierNode(name: "pair"), DotAccessNode(), IdentifierNode(name: "value")
+    ])
+  }
+
+  async test `can parse function call with if-else-if lambda`() {
+    let source = "|
+      class Test {
+        func() {
+          context.currentParsers.forEach((parser) -> {
+            TokenMatch match = parser.match(token, context)
+            if (match != null) {
+              ParseEngine.log.debugFunc(() -> \"Matched: \#{parser.class.name}\")
+            } else if (parser.matcher.partial) {
+              ParseEngine.log.debugFunc(() -> \"Partial match: \#{parser.class.name}\")
+            }
+          })
+        }
+      }
+      |"
+
+    let file = File("Test.flat")
+    let stream = Parser().parse(FileParser(), ParseContext(file: file), Lexer().lex(source):emit("start"))
+
+    let nodes = Node[]
+
+    stream.on<Node>("data", { nodes.add(_) })
+    stream.emit("start")
+    stream.waitFor("close")
+
+    expect(nodes).toBe([
+      FileNode(file: file),
+      ClassNode(name: "Test", implicitName: false),
+      FunctionNode(name: "func", type: "TokenMatch"),
+        IdentifierNode(name: "context"), DotAccessNode(), IdentifierNode(name: "currentParsers"), DotAccessNode(), FunctionCallNode(name: "forEach"), LambdaNode(), LocalScopeNode(),
+          LocalDeclarationNode(name: "match", type: "TokenMatch"),
+            AssignmentNode(),
+            IdentifierNode(name: "parser"), DotAccessNode(), FunctionCallNode(name: "match"), IdentifierNode(name: "token"),
+          IfNode(), PriorityNode(),
+            IdentifierNode(name: "match"), BinaryOperationNode(operator: "!="), LiteralNode(value: "null", literalType: LiteralNode.Type.NULL),
+          LocalScopeNode(),
+            IdentifierNode(name: "ParseEngine"), DotAccessNode(), IdentifierNode(name: "log"), DotAccessNode(), FunctionCallNode(name: "debugFunc"),
+              LambdaNode(), LiteralNode(value: "\"Matched: \#{parser.class.name}\"", literalType: LiteralNode.Type.STRING),
+          ElseNode(), IfNode(), PriorityNode(),
+            IdentifierNode(name: "parser"), DotAccessNode(), IdentifierNode(name: "matcher"), DotAccessNode(), IdentifierNode(name: "partial"),
+          LocalScopeNode(),
+            IdentifierNode(name: "ParseEngine"), DotAccessNode(), IdentifierNode(name: "log"), DotAccessNode(), FunctionCallNode(name: "debugFunc"),
+              LambdaNode(), LiteralNode(value: "\"Partial match: \#{parser.class.name}\"", literalType: LiteralNode.Type.STRING)
+    ])
+  }
+}

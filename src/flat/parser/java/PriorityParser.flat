@@ -1,0 +1,36 @@
+package flat/parser/java
+
+import flat/parser
+import flat/parser/matchers
+import flat/ast/PriorityNode
+import flat/compiler/models/Token
+import flat/log/Logger
+
+data class extends ParserBase {
+  static Logger log = Logger(PriorityParser.class)
+
+  override ParserBase[] childParsers => [
+    DotAccessParser(),
+    TernaryParser(),
+    AssignmentParser(),
+    ArrayAccessParser(),
+    BinaryOperationParser(),
+    UnaryOperationParser(),
+  ]
+
+  override lazy TokenPattern pattern => GroupTokenPattern([
+    SingleTokenPattern(type: Token.Type.SYMBOL, value: "("),
+    NodeTokenPattern(LocalScopeParser().valueParsers, label: "value"),
+    SingleTokenPattern(type: Token.Type.SYMBOL, value: ")")
+  ], label: "priority")
+
+  override public generateNode() -> PriorityNode {
+    return PriorityNode()
+  }
+
+  override public getChildNodeTokenMatches() => NodeTokenMatch[] {
+    if (let priority = lastMatch.getMatch<GroupTokenMatch>("priority")) {
+      return (NodeTokenMatch[])priority.tokenMatches.filter({ _.label == "value" })
+    }
+  }
+}

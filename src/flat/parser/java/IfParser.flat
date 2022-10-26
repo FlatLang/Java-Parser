@@ -1,0 +1,41 @@
+package flat/parser/java
+
+import flat/parser
+import flat/parser/matchers
+import flat/ast/IfNode
+import flat/compiler/models/Token
+import flat/log/Logger
+
+data class extends ParserBase implements ScopeableParser {
+  static Logger log = Logger(IfParser.class)
+
+  override lazy TokenPattern pattern => GroupTokenPattern([
+    SingleTokenPattern(type: Token.Type.IDENTIFIER, value: "if"),
+    NodeTokenPattern(conditionParsers, label: "condition"),
+    NodeTokenPattern(LocalScopeParser().valueParsers, label: "if_body"),
+  ], label: "if")
+
+  ParserBase[] conditionParsers => [
+    AnnotationParser(),
+    FunctionCallParser(),
+    IdentifierParser(),
+    LiteralParser(),
+    LambdaParser(),
+    ArrayInitializerParser(),
+    UnaryOperationParser(),
+    PriorityParser(),
+    CastParser(),
+    LocalDeclarationParser(),
+    TernaryParser()
+  ]
+
+  override public generateNode() -> IfNode {
+    return IfNode()
+  }
+
+  override public getChildNodeTokenMatches() => NodeTokenMatch[] {
+    if (let params = lastMatch.getMatch<GroupTokenMatch>("if")) {
+      return (NodeTokenMatch[])params.tokenMatches.filter(m => m.label == "condition" || m.label == "if_body")
+    }
+  }
+}

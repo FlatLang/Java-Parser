@@ -1,0 +1,43 @@
+package flat/parser/java
+
+import flat/parser
+import flat/parser/matchers
+import flat/ast/FieldNode
+import flat/compiler/models/Token
+
+import flat/extensions/SyntaxStringFunctions
+
+import flat/ast/Node
+
+data class extends ParserBase implements ScopeableParser {
+  override ParserBase[] childParsers => [
+    AssignmentParser(),
+  ]
+
+  override lazy TokenPattern pattern => GroupTokenPattern([
+    SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "declaration_type"),
+    Patterns.genericParameters,
+    GroupTokenPattern([
+      SingleTokenPattern(type: Token.Type.SYMBOL, value: "[", label: "bracket_start"),
+      SingleTokenPattern(type: Token.Type.SYMBOL, value: "]", label: "bracket_end")
+    ], repeat: true, optional: true),
+    SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "declaration_name"),
+    GroupTokenPattern([
+      SingleTokenPattern(type: Token.Type.SYMBOL, value: ","),
+      SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "declaration_name"),
+    ], optional: true, repeat: true),
+    SingleTokenPattern(type: Token.Type.SYMBOL, value: ",", optional: true),
+  ], label: "field")
+
+  override public generateNode() -> FieldNode {
+    let type = lastMatch.getValue("declaration_type")
+    let name = lastMatch.getValue("declaration_name")
+    let bracketCount = lastMatch.getValues("bracket_start").count
+
+    return FieldNode(
+      type: type,
+      name: name,
+      arrayDimensions: bracketCount
+    )
+  }
+}

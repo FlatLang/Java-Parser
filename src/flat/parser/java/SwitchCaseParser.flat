@@ -1,0 +1,19 @@
+package flat/parser/java
+
+import flat/parser
+import flat/parser/matchers
+import flat/ast/MatchCaseNode
+import flat/compiler/models/Token
+import flat/log/Logger
+
+data class extends ParserBase {
+  static Logger log = Logger(SwitchCaseParser.class)
+
+  override ParserBase[] childParsers => LocalScopeParser().valueParsers
+
+  override lazy TokenPattern pattern => SingleTokenPattern(type: Token.Type.SYMBOL, value: "=>")
+
+  override public generateNode() -> MatchCaseNode {
+    return MatchCaseNode()
+  }
+}
