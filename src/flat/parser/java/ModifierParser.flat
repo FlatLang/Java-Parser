@@ -11,31 +11,31 @@ import flat/extensions/SyntaxStringFunctions
 data class extends ParserBase {
   override lazy TokenPattern pattern => XorTokenPattern([
     GroupTokenPattern([
-      PreconditionTokenPattern(parentTypes: PublicModifier.allowedNodeContexts),
+      PreconditionTokenPattern(baseParentTypes: PublicModifier.allowedBaseParents, parentTypes: PublicModifier.allowedParents),
       SingleTokenPattern(type: Token.Type.IDENTIFIER, values: PublicModifier.aliases, label: "alias"),
     ]),
     GroupTokenPattern([
-      PreconditionTokenPattern(parentTypes: PrivateModifier.allowedNodeContexts),
+      PreconditionTokenPattern(baseParentTypes: PrivateModifier.allowedBaseParents, parentTypes: PrivateModifier.allowedParents),
       SingleTokenPattern(type: Token.Type.IDENTIFIER, values: PrivateModifier.aliases, label: "alias"),
     ]),
     GroupTokenPattern([
-      PreconditionTokenPattern(parentTypes: ProtectedModifier.allowedNodeContexts),
+      PreconditionTokenPattern(baseParentTypes: ProtectedModifier.allowedBaseParents, parentTypes: ProtectedModifier.allowedParents),
       SingleTokenPattern(type: Token.Type.IDENTIFIER, values: ProtectedModifier.aliases, label: "alias"),
     ]),
     GroupTokenPattern([
-      PreconditionTokenPattern(parentTypes: StaticModifier.allowedNodeContexts),
+      PreconditionTokenPattern(baseParentTypes: StaticModifier.allowedBaseParents, parentTypes: StaticModifier.allowedParents),
       SingleTokenPattern(type: Token.Type.IDENTIFIER, values: StaticModifier.aliases, label: "alias"),
     ]),
     GroupTokenPattern([
-      PreconditionTokenPattern(parentTypes: NativeModifier.allowedNodeContexts),
+      PreconditionTokenPattern(baseParentTypes: NativeModifier.allowedBaseParents, parentTypes: NativeModifier.allowedParents),
       SingleTokenPattern(type: Token.Type.IDENTIFIER, values: NativeModifier.aliases, label: "alias"),
     ]),
     GroupTokenPattern([
-      PreconditionTokenPattern(parentTypes: AbstractModifier.allowedNodeContexts),
+      PreconditionTokenPattern(baseParentTypes: AbstractModifier.allowedBaseParents, parentTypes: AbstractModifier.allowedParents),
       SingleTokenPattern(type: Token.Type.IDENTIFIER, values: AbstractModifier.aliases, label: "alias"),
     ]),
     GroupTokenPattern([
-      PreconditionTokenPattern(parentTypes: FinalModifier.allowedNodeContexts),
+      PreconditionTokenPattern(baseParentTypes: FinalModifier.allowedBaseParents, parentTypes: FinalModifier.allowedParents),
       SingleTokenPattern(type: Token.Type.IDENTIFIER, values: FinalModifier.aliases, label: "alias"),
     ]),
   ], exact: true, metadata: true)

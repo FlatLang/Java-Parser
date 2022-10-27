@@ -6,12 +6,12 @@ import flat/ast/ElseNode
 import flat/compiler/models/Token
 import flat/log/Logger
 
-data class extends ParserBase implements ScopeableParser {
+data class extends ParserBase {
   static Logger log = Logger(ElseParser.class)
 
   override lazy TokenPattern pattern => GroupTokenPattern([
     SingleTokenPattern(type: Token.Type.IDENTIFIER, value: "else"),
-    NodeTokenPattern(LocalScopeParser().valueParsers, label: "else_body"),
+    NodeTokenPattern(LocalScopeParser().valueParsers, baseParser: true, label: "else_body"),
   ], label: "else")
 
   override public generateNode() -> ElseNode {
