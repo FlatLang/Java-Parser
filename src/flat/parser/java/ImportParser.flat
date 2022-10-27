@@ -17,7 +17,7 @@ data class extends ParserBase {
     GroupTokenPattern([
       SingleTokenPattern(type: Token.Type.SYMBOL, value: ".", label: "import_location_component"),
       SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "import_location_component")
-    ], repeat: true, optional: true, greedy: false),
+    ], repeat: true, optional: true),
     GroupTokenPattern([
       SingleTokenPattern(type: Token.Type.SYMBOL, value: ".", label: "import_location_component"),
       SingleTokenPattern(type: Token.Type.SYMBOL, value: "*", label: "import_location_component")
