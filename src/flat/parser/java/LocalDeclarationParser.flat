@@ -4,8 +4,7 @@ import flat/parser
 import flat/parser/matchers
 import flat/ast/LocalDeclarationNode
 import flat/compiler/models/Token
-import flat/annotations/LetModifier
-import flat/annotations/VarModifier
+import flat/annotations/java
 
 import flat/extensions/SyntaxStringFunctions
 

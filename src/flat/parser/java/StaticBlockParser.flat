@@ -3,7 +3,7 @@ package flat/parser/java
 import flat/ast
 import flat/parser
 import flat/parser/matchers
-import flat/annotations
+import flat/annotations/java
 import flat/compiler/models/Token
 
 data class extends ParserBase {
