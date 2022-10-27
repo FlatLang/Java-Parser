@@ -26,12 +26,14 @@ class {
 
   visible static lazy TokenPattern genericArguments => GroupTokenPattern([
     SingleTokenPattern(type: Token.Type.SYMBOL, value: "<"),
-    type,
     GroupTokenPattern([
-      SingleTokenPattern(type: Token.Type.SYMBOL, value: ","),
       type,
-    ], repeat: true, optional: true),
-    SingleTokenPattern(type: Token.Type.SYMBOL, value: ",", optional: true),
+      GroupTokenPattern([
+        SingleTokenPattern(type: Token.Type.SYMBOL, value: ","),
+        type,
+      ], repeat: true, optional: true),
+      SingleTokenPattern(type: Token.Type.SYMBOL, value: ",", optional: true),
+    ], optional: true),
     SingleTokenPattern(type: Token.Type.SYMBOL, value: ">"),
   ], optional: true, label: "generic_arguments")
 
