@@ -12,6 +12,7 @@ data class extends ParserBase {
     ArrayInitializerParser(),
     LiteralParser(),
     FunctionCallParser(),
+    InstantiationParser(),
     UnaryOperationParser(),
     PriorityParser(),
   ])

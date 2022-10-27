@@ -27,6 +27,7 @@ data class extends ParserBase {
   ParserBase[] indexParsers => [
     AnnotationParser(),
     FunctionCallParser(),
+    InstantiationParser(),
     IdentifierParser(),
     ArrayInstantiationParser(),
     ArrayInitializerParser(),

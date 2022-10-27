@@ -18,6 +18,7 @@ data class extends ParserBase {
   ParserBase[] conditionParsers => [
     AnnotationParser(),
     FunctionCallParser(),
+    InstantiationParser(),
     LocalDeclarationParser(),
     IdentifierParser(),
     LiteralParser(),

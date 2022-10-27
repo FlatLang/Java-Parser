@@ -29,6 +29,7 @@ data class extends ParserBase {
   let ParserBase[] indexParsers => [
     AnnotationParser(),
     FunctionCallParser(),
+    InstantiationParser(),
     IdentifierParser(),
     LiteralParser(),
     LambdaParser(),

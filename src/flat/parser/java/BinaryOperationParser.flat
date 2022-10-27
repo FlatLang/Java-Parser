@@ -14,6 +14,7 @@ data class extends ParserBase {
     CastParser(),
     PriorityParser(),
     FunctionCallParser(),
+    InstantiationParser(),
     UnaryOperationParser(),
   ])
 

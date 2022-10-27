@@ -23,7 +23,8 @@ data class extends ParserBase {
     IdentifierParser(),
     LiteralParser(),
     PriorityParser(),
-    FunctionCallParser()
+    FunctionCallParser(),
+    InstantiationParser(),
   ]
 
   override public generateNode() -> ForEachLoopNode {

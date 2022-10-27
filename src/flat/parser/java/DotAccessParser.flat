@@ -8,7 +8,8 @@ import flat/compiler/models/Token
 data class extends ParserBase {
   override ParserBase[] childParsers => Array():addAll([
     IdentifierParser(),
-    FunctionCallParser()
+    FunctionCallParser(),
+    InstantiationParser(),
   ])
 
   override lazy TokenPattern pattern => SingleTokenPattern(type: Token.Type.SYMBOL, value: ".", exact: true)
