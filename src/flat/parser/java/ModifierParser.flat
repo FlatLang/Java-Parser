@@ -38,6 +38,10 @@ data class extends ParserBase {
       PreconditionTokenPattern(baseParentTypes: FinalModifier.allowedBaseParents, parentTypes: FinalModifier.allowedParents),
       SingleTokenPattern(type: Token.Type.IDENTIFIER, values: FinalModifier.aliases, label: "alias"),
     ]),
+    GroupTokenPattern([
+      PreconditionTokenPattern(baseParentTypes: DefaultModifier.allowedBaseParents, parentTypes: DefaultModifier.allowedParents),
+      SingleTokenPattern(type: Token.Type.IDENTIFIER, values: DefaultModifier.aliases, label: "alias"),
+    ]),
   ], exact: true, metadata: true)
 
   override public generateNode() -> AnnotationNode => null {
@@ -50,5 +54,6 @@ data class extends ParserBase {
     if (NativeModifier.aliases.any({ _ == alias})) return NativeModifier(aliasUsed: alias)
     if (AbstractModifier.aliases.any({ _ == alias})) return AbstractModifier(aliasUsed: alias)
     if (FinalModifier.aliases.any({ _ == alias})) return FinalModifier(aliasUsed: alias)
+    if (DefaultModifier.aliases.any({ _ == alias})) return DefaultModifier(aliasUsed: alias)
   }
 }
