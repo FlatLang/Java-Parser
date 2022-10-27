@@ -95,4 +95,24 @@ testable class {
     expect(result?.tokens).toBe(expected)
     expect(matcher.partial).toBe(true)
   }
+
+  test `can match wildcard import`() {
+    let matcher = ImportParser().matcher
+    let result = matcher.matchAll([
+      Token(value: "import", type: Token.Type.IDENTIFIER),
+      Token(value: "bob", type: Token.Type.IDENTIFIER),
+      Token(value: ".", type: Token.Type.SYMBOL),
+      Token(value: "*", type: Token.Type.SYMBOL),
+    ], ParseContext()).last
+
+    let expected = [
+      Token(value: "import", type: Token.Type.IDENTIFIER),
+      Token(value: "bob", type: Token.Type.IDENTIFIER),
+      Token(value: ".", type: Token.Type.SYMBOL),
+      Token(value: "*", type: Token.Type.SYMBOL),
+    ]
+
+    expect(result?.tokens).toBe(expected)
+    expect(matcher.partial).toBe(false)
+  }
 }
