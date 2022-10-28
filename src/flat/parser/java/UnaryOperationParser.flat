@@ -21,6 +21,7 @@ data class extends ParserBase {
     FunctionCallParser(),
     InstantiationParser(),
     BinaryOperationParser(),
+    PriorityParser(),
   ])
 
   override lazy TokenPattern pattern => SingleTokenPattern(
