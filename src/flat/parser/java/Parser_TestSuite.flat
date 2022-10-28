@@ -21,6 +21,7 @@ import flat/parser/matchers
   FunctionCallParser_Test,
   ArrayAccessParser_Test,
   ArrayInstantiationParser_Test,
+  ArrayInitializerParser_Test,
   LocalDeclarationParser_Test,
   SwitchCaseParser_Test,
   IfParser_Test,
