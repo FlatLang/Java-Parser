@@ -18,11 +18,13 @@ data class extends ParserBase {
         SingleTokenPattern(type: Token.Type.SYMBOL, value: "[", label: "bracket_start"),
         SingleTokenPattern(type: Token.Type.SYMBOL, value: "]", label: "bracket_end")
       ], repeat: true),
+      SingleTokenPattern(type: Token.Type.SYMBOL, value: "...", optional: true, label: "varargs"),
       SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "name")
     ]),
     GroupTokenPattern([
       Patterns.typeName,
       Patterns.genericParameters,
+      SingleTokenPattern(type: Token.Type.SYMBOL, value: "...", optional: true, label: "varargs"),
       SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "name"),
       GroupTokenPattern([
         SingleTokenPattern(type: Token.Type.SYMBOL, value: "[", label: "bracket_start"),
@@ -32,6 +34,7 @@ data class extends ParserBase {
     GroupTokenPattern([
       Patterns.typeName,
       Patterns.genericParameters,
+      SingleTokenPattern(type: Token.Type.SYMBOL, value: "...", optional: true, label: "varargs"),
       SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "name"),
     ]),
   ], label: "parameter")
