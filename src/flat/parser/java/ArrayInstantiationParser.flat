@@ -9,7 +9,8 @@ data class extends ParserBase {
   override ParserBase[] childParsers => Array():addAll([
     DotAccessParser(),
     AssignmentParser(),
-    ArrayAccessParser()
+    ArrayAccessParser(),
+    ArrayInitializerParser(),
   ])
 
   override lazy TokenPattern pattern => GroupTokenPattern([
@@ -18,9 +19,23 @@ data class extends ParserBase {
     Patterns.genericParameters,
     GroupTokenPattern([
       SingleTokenPattern(type: Token.Type.SYMBOL, value: "["),
-      SingleTokenPattern(type: Token.Type.SYMBOL, value: "]")
+      NodeTokenPattern(sizeParsers, optional: true, label: "size"),
+      SingleTokenPattern(type: Token.Type.SYMBOL, value: "]"),
     ], repeat: true, label: "brackets")
   ])
+
+  ParserBase[] sizeParsers => [
+    AnnotationParser(),
+    FunctionCallParser(),
+    InstantiationParser(),
+    IdentifierParser(),
+    ArrayInstantiationParser(),
+    ArrayInitializerParser(),
+    LiteralParser(),
+    UnaryOperationParser(),
+    CastParser(),
+    PriorityParser(),
+  ]
 
   override public generateNode() -> ArrayInstantiationNode {
     return ArrayInstantiationNode(
