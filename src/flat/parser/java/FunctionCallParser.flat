@@ -35,12 +35,12 @@ data class extends ParserBase {
   ParserBase[] argumentParsers => [
     AnnotationParser(),
     FunctionCallParser(),
+    ArrayInstantiationParser(),
     InstantiationParser(),
     LocalDeclarationParser(),
     IdentifierParser(),
     LiteralParser(),
     LambdaParser(),
-    ArrayInstantiationParser(),
     UnaryOperationParser(),
     CastParser(),
     PriorityParser(),
