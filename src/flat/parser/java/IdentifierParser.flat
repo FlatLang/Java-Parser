@@ -8,6 +8,7 @@ import flat/compiler/models/Token
 data class extends ParserBase {
   override ParserBase[] childParsers => [
     DotAccessParser(),
+    FunctionReferenceAccessParser(),
     BinaryOperationParser(),
     TernaryParser(),
     AssignmentParser(),
