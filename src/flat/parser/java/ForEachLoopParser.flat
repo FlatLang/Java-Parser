@@ -12,8 +12,8 @@ data class extends ParserBase {
   override lazy TokenPattern pattern => GroupTokenPattern([
     SingleTokenPattern(type: Token.Type.IDENTIFIER, value: "for"),
     SingleTokenPattern(type: Token.Type.SYMBOL, value: "("),
-    SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "name"),
-    SingleTokenPattern(type: Token.Type.IDENTIFIER, value: "in"),
+    NodeTokenPattern([ParameterParser()]),
+    SingleTokenPattern(type: Token.Type.SYMBOL, value: ":"),
     NodeTokenPattern(iteratorParsers, label: "iterator", greedy: false),
     SingleTokenPattern(type: Token.Type.SYMBOL, value: ")"),
     NodeTokenPattern(LocalScopeParser().valueParsers, baseParser: true, label: "for_each_loop_body"),
