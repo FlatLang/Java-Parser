@@ -10,8 +10,8 @@ data class extends ParserBase {
   static Logger log = Logger(ReturnParser.class)
 
   override ParserBase[] childParsers => Array()
-    :addAll(LocalScopeParser().valueParsers)
     :add(LambdaParser())
+    :addAll(LocalScopeParser().valueParsers)
 
   override lazy TokenPattern pattern => SingleTokenPattern(type: Token.Type.IDENTIFIER, value: "return", exact: true)
 
