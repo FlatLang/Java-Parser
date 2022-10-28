@@ -2,17 +2,31 @@ package flat/parser/java
 
 import flat/parser
 import flat/parser/matchers
-import flat/ast/AnnotationNode
+import flat/ast
+import flat/annotations
+import flat/annotations/java
 import flat/compiler/models/Token
 
 import flat/extensions/SyntaxStringFunctions
 
 data class extends ParserBase {
-  override lazy TokenPattern pattern => NodeTokenPattern([
-    ModifierParser(),
-  ], exact: true, metadata: true, label: "annotation")
+  override lazy TokenPattern pattern => XorTokenPattern([
+    GroupTokenPattern([
+      SingleTokenPattern(type: Token.Type.SYMBOL, value: "@"),
+      SingleTokenPattern(type: Token.Type.IDENTIFIER, values: [
+        OverrideAnnotation.identifier
+      ], label: "annotation_identifier"),
+    ], label: "traditional_annotation"),
+    NodeTokenPattern([ModifierParser()], label: "modifier"),
+  ], label: "annotation", exact: true, metadata: true)
 
-  override public generateNode() -> AnnotationNode {
-    return lastMatch.getMatch<NodeTokenMatch>("annotation").generateNode()
+  override public generateNode() -> AnnotationNode => null {
+    if (let modifier = lastMatch.getMatch<NodeTokenMatch>("modifier")) {
+      return modifier.generateNode()
+    } else if (let id = lastMatch.getValue("annotation_identifier")) {
+      match id {
+        "Override" => return OverrideAnnotation()
+      }
+    }
   }
 }
