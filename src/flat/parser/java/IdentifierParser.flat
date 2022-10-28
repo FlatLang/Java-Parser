@@ -16,7 +16,21 @@ data class extends ParserBase {
     UnaryOperationParser(),
   ]
 
-  override lazy TokenPattern pattern => SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "name")
+  static String[] KEYWORDS = [
+    "continue", "for", "switch", "assert", "if",
+    "goto", "package", "synchronized", "do",
+    "break", "implements", "throw", "else",
+    "import", "public", "throws", "case", "enum",
+    "instanceof", "return", "transient", "catch",
+    "extends", "short", "try", "interface",
+    "finally", "strictfp", "while",
+  ]
+
+  override lazy TokenPattern pattern => SingleTokenPattern(
+    type: Token.Type.IDENTIFIER,
+    label: "name",
+    notValues: KEYWORDS
+  )
 
   override public generateNode() -> IdentifierNode {
     return IdentifierNode(
