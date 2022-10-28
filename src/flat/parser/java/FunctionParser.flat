@@ -11,9 +11,9 @@ data class extends ParserBase {
   static Logger log = Logger(FunctionParser.class)
 
   override lazy TokenPattern pattern => GroupTokenPattern([
+    Patterns.genericParameters,
     Patterns.type,
     IdentifierParser().pattern,
-    Patterns.genericParameters,
     SingleTokenPattern(type: Token.Type.SYMBOL, value: "("),
     GroupTokenPattern([
       NodeTokenPattern(parameterParsers, baseParser: true, label: "parameter"),
