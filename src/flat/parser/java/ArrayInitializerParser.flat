@@ -30,6 +30,7 @@ data class extends ParserBase {
     AnnotationParser(),
     FunctionCallParser(),
     InstantiationParser(),
+    ArrayReferenceParser(),
     IdentifierParser(),
     LiteralParser(),
     LambdaParser(),

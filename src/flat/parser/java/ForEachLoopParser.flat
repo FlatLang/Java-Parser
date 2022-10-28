@@ -20,6 +20,7 @@ data class extends ParserBase {
   ])
 
   let ParserBase[] iteratorParsers => [
+    ArrayReferenceParser(),
     IdentifierParser(),
     LiteralParser(),
     PriorityParser(),

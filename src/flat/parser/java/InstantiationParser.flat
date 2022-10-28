@@ -39,6 +39,7 @@ data class extends ParserBase {
     InstantiationParser(),
     LocalDeclarationParser(),
     IdentifierParser(),
+    ArrayReferenceParser(),
     LiteralParser(),
     LambdaParser(),
     ArrayInitializerParser(),

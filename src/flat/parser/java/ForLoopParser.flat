@@ -24,11 +24,13 @@ data class extends ParserBase {
   let ParserBase[] initializerParsers => [
     AnnotationParser(),
     LocalDeclarationParser(),
+    ArrayReferenceParser(),
     IdentifierParser(),
   ]
 
   let ParserBase[] conditionParsers => [
     AnnotationParser(),
+    ArrayReferenceParser(),
     IdentifierParser(),
     LiteralParser(),
     CastParser(),
@@ -40,6 +42,7 @@ data class extends ParserBase {
 
   let ParserBase[] incrementorParsers => [
     AnnotationParser(),
+    ArrayReferenceParser(),
     IdentifierParser(),
     LiteralParser(),
     CastParser(),
