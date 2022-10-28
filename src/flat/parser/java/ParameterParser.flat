@@ -12,7 +12,7 @@ data class extends ParserBase {
 
   override lazy TokenPattern pattern => XorTokenPattern([
     GroupTokenPattern([
-      SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "type"),
+      Patterns.typeName,
       Patterns.genericParameters,
       GroupTokenPattern([
         SingleTokenPattern(type: Token.Type.SYMBOL, value: "[", label: "bracket_start"),
@@ -21,7 +21,7 @@ data class extends ParserBase {
       SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "name")
     ]),
     GroupTokenPattern([
-      SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "type"),
+      Patterns.typeName,
       Patterns.genericParameters,
       SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "name"),
       GroupTokenPattern([
@@ -30,14 +30,14 @@ data class extends ParserBase {
       ], repeat: true),
     ]),
     GroupTokenPattern([
-      SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "type"),
+      Patterns.typeName,
       Patterns.genericParameters,
       SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "name"),
     ]),
   ], label: "parameter")
 
   override public generateNode() -> ParameterNode {
-    let type = lastMatch.getValue("type")
+    let type = lastMatch.getValue("type_name")
     let name = lastMatch.getValue("name")
     let bracketCount = lastMatch.getValues("bracket_start").count
 
