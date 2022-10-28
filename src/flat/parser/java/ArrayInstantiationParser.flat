@@ -13,7 +13,8 @@ data class extends ParserBase {
   ])
 
   override lazy TokenPattern pattern => GroupTokenPattern([
-    SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "type"),
+    SingleTokenPattern(type: Token.Type.IDENTIFIER, value: "new"),
+    Patterns.typeName,
     Patterns.genericParameters,
     GroupTokenPattern([
       SingleTokenPattern(type: Token.Type.SYMBOL, value: "["),
@@ -23,7 +24,7 @@ data class extends ParserBase {
 
   override public generateNode() -> ArrayInstantiationNode {
     return ArrayInstantiationNode(
-      type: lastMatch.getValue("type"),
+      type: lastMatch.getValue("type_name"),
       arrayDimensions: lastMatch.getMatches("brackets").count
     )
   }
