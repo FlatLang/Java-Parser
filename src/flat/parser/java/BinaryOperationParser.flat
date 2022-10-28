@@ -25,7 +25,6 @@ data class extends ParserBase {
       "&=", "|=",
       "!=", "==", "&&", "&", "||", "|",
       "<", ">", "<=", ">=",
-      "?:"
     ]),
     SingleTokenPattern(type: Token.Type.IDENTIFIER, value: "instanceof")
   ])
