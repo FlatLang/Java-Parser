@@ -21,7 +21,6 @@ data class extends ParserBase {
     ForEachLoopParser(),
     ContinueParser(),
     BreakParser(),
-    LocalDeclarationParser(),
     FunctionCallParser(),
     InstantiationParser(),
     IdentifierParser(),
@@ -31,6 +30,7 @@ data class extends ParserBase {
     CastParser(),
     PriorityParser(),
     LocalScopeParser(),
+    LocalDeclarationParser(),
   ]
 
   override lazy TokenPattern pattern => GroupTokenPattern([
