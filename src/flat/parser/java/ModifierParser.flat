@@ -44,16 +44,16 @@ data class extends ParserBase {
     ]),
   ], exact: true, metadata: true)
 
-  override public generateNode() -> AnnotationNode => null {
+  override public traverseNodes(func(Node, ParseContext, TokenPattern)) {
     let alias = lastMatch.getValue("alias")
 
-    if (PublicModifier.aliases.any({ _ == alias})) return PublicModifier(aliasUsed: alias)
-    if (PrivateModifier.aliases.any({ _ == alias})) return PrivateModifier(aliasUsed: alias)
-    if (ProtectedModifier.aliases.any({ _ == alias})) return ProtectedModifier(aliasUsed: alias)
-    if (StaticModifier.aliases.any({ _ == alias})) return StaticModifier(aliasUsed: alias)
-    if (NativeModifier.aliases.any({ _ == alias})) return NativeModifier(aliasUsed: alias)
-    if (AbstractModifier.aliases.any({ _ == alias})) return AbstractModifier(aliasUsed: alias)
-    if (FinalModifier.aliases.any({ _ == alias})) return FinalModifier(aliasUsed: alias)
-    if (DefaultModifier.aliases.any({ _ == alias})) return DefaultModifier(aliasUsed: alias)
+    if (PublicModifier.aliases.any({ _ == alias})) func(PublicModifier(aliasUsed: alias), lastMatch.context, lastMatch.pattern)
+    if (PrivateModifier.aliases.any({ _ == alias})) func(PrivateModifier(aliasUsed: alias), lastMatch.context, lastMatch.pattern)
+    if (ProtectedModifier.aliases.any({ _ == alias})) func(ProtectedModifier(aliasUsed: alias), lastMatch.context, lastMatch.pattern)
+    if (StaticModifier.aliases.any({ _ == alias})) func(StaticModifier(aliasUsed: alias), lastMatch.context, lastMatch.pattern)
+    if (NativeModifier.aliases.any({ _ == alias})) func(NativeModifier(aliasUsed: alias), lastMatch.context, lastMatch.pattern)
+    if (AbstractModifier.aliases.any({ _ == alias})) func(AbstractModifier(aliasUsed: alias), lastMatch.context, lastMatch.pattern)
+    if (FinalModifier.aliases.any({ _ == alias})) func(FinalModifier(aliasUsed: alias), lastMatch.context, lastMatch.pattern)
+    if (DefaultModifier.aliases.any({ _ == alias})) func(DefaultModifier(aliasUsed: alias), lastMatch.context, lastMatch.pattern)
   }
 }

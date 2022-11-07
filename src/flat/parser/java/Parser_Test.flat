@@ -35,7 +35,7 @@ testable class {
 
     let nodes = Node[]
 
-    stream.on<Node>("data", { nodes.add(_) })
+    stream.on<NodeResult>("data", { nodes.add(_.node) })
     stream.emit("start")
     stream.waitFor("close")
 
@@ -89,7 +89,7 @@ testable class {
 
     let nodes = Node[]
 
-    stream.on<Node>("data", { nodes.add(_) })
+    stream.on<NodeResult>("data", { nodes.add(_.node) })
     stream.emit("start")
     stream.waitFor("close")
 

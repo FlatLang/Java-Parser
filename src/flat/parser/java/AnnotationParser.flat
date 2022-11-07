@@ -20,12 +20,12 @@ data class extends ParserBase {
     NodeTokenPattern([ModifierParser()], label: "modifier"),
   ], label: "annotation", exact: true, metadata: true)
 
-  override public generateNode() -> AnnotationNode => null {
+  override public traverseNodes(func(Node, ParseContext, TokenPattern)) {
     if (let modifier = lastMatch.getMatch<NodeTokenMatch>("modifier")) {
-      return modifier.generateNode()
+      modifier.traverseNodes(func)
     } else if (let id = lastMatch.getValue("annotation_identifier")) {
       match id {
-        "Override" => return OverrideAnnotation()
+        "Override" => func(OverrideAnnotation(), lastMatch.context, lastMatch.pattern)
       }
     }
   }

@@ -24,10 +24,14 @@ data class extends ParserBase {
     ], optional: true),
   ])
 
-  override public generateNode() -> ImportNode {
-    return ImportNode(
-      location: lastMatch.getValues("import_location_component").join(),
-      staticImport: lastMatch.getValues("static").isNotEmpty
+  override public traverseNodes(func(Node, ParseContext, TokenPattern)) {
+    func(
+      ImportNode(
+        location: lastMatch.getValues("import_location_component").join(),
+        staticImport: lastMatch.getValues("static").isNotEmpty
+      ),
+      lastMatch.context,
+      lastMatch.pattern
     )
   }
 }

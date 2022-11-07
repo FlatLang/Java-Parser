@@ -24,8 +24,4 @@ data class extends ParserBase {
     NodeTokenPattern(LocalScopeParser().valueParsers, label: "value"),
     SingleTokenPattern(type: Token.Type.SYMBOL, value: ")")
   ], label: "priority")
-
-  override public generateNode() -> PriorityNode {
-    return PriorityNode()
-  }
 }
