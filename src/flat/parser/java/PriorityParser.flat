@@ -28,10 +28,4 @@ data class extends ParserBase {
   override public generateNode() -> PriorityNode {
     return PriorityNode()
   }
-
-  override public getChildNodeTokenMatches() => NodeTokenMatch[] {
-    if (let priority = lastMatch.getMatch<GroupTokenMatch>("priority")) {
-      return (NodeTokenMatch[])priority.tokenMatches.filter({ _.label == "value" })
-    }
-  }
 }
