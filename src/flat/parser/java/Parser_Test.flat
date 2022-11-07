@@ -40,31 +40,31 @@ testable class {
     stream.waitFor("close")
 
     expect(nodes).toBe([
-      ClassNode(), IdentifierNode(name: "Test"),
-      FunctionNode(), IdentifierNode(name: "func"),
-      IdentifierNode(name: "source"), DotAccessNode(), FunctionCallNode(), IdentifierNode(name: "forEach"), LambdaNode(), LocalScopeNode(),
+      ClassNode(), IdentifierNode(name: ident("Test")),
+      FunctionNode(), IdentifierNode(name: ident("func")),
+      IdentifierNode(name: ident("source")), DotAccessNode(), FunctionCallNode(), IdentifierNode(name: ident("forEach")), LambdaNode(), LocalScopeNode(),
         IfNode(), PriorityNode(),
-          UnaryOperationNode(operator: "!"), IdentifierNode(name: "dest"), DotAccessNode(), FunctionCallNode(), IdentifierNode(name: "containsKey"),
-            IdentifierNode(name: "pair"), DotAccessNode(), IdentifierNode(name: "key"),
+          UnaryOperationNode(operator: sym("!")), IdentifierNode(name: ident("dest")), DotAccessNode(), FunctionCallNode(), IdentifierNode(name: ident("containsKey")),
+            IdentifierNode(name: ident("pair")), DotAccessNode(), IdentifierNode(name: ident("key")),
         LocalScopeNode(),
-          IdentifierNode(name: "dest"), ArrayAccessNode(), IdentifierNode(name: "pair"), DotAccessNode(), IdentifierNode(name: "key"),
+          IdentifierNode(name: ident("dest")), ArrayAccessNode(), IdentifierNode(name: ident("pair")), DotAccessNode(), IdentifierNode(name: ident("key")),
             AssignmentNode(),
-            IdentifierNode(name: "pair"), DotAccessNode(), IdentifierNode(name: "value"),
+            IdentifierNode(name: ident("pair")), DotAccessNode(), IdentifierNode(name: ident("value")),
         IfNode(), PriorityNode(),
-          IdentifierNode(name: "pair"), DotAccessNode(), IdentifierNode(name: "value"), DotAccessNode(), IdentifierNode(name: "class"), DotAccessNode(), FunctionCallNode(), IdentifierNode(name: "isOfType"),
-            IdentifierNode(name: "HashMap"), DotAccessNode(), IdentifierNode(name: "class"),
+          IdentifierNode(name: ident("pair")), DotAccessNode(), IdentifierNode(name: ident("value")), DotAccessNode(), IdentifierNode(name: ident("class")), DotAccessNode(), FunctionCallNode(), IdentifierNode(name: ident("isOfType")),
+            IdentifierNode(name: ident("HashMap")), DotAccessNode(), IdentifierNode(name: ident("class")),
         LocalScopeNode(),
-          LocalDeclarationNode(), IdentifierNode(name: "hashmap"),
+          LocalDeclarationNode(), IdentifierNode(name: ident("hashmap")),
             AssignmentNode(),
-            CastNode(), TypeNode(name: "HashMap"), IdentifierNode(name: "pair"), DotAccessNode(), IdentifierNode(name: "value"),
-          LocalDeclarationNode(), IdentifierNode(name: "existingHashmap"),
+            CastNode(), TypeNode(name: ident("HashMap")), IdentifierNode(name: ident("pair")), DotAccessNode(), IdentifierNode(name: ident("value")),
+          LocalDeclarationNode(), IdentifierNode(name: ident("existingHashmap")),
             AssignmentNode(),
-            CastNode(), TypeNode(name: "HashMap"), IdentifierNode(name: "dest"), ArrayAccessNode(), IdentifierNode(name: "pair"), DotAccessNode(), IdentifierNode(name: "key"),
-          FunctionCallNode(), IdentifierNode(name: "merge"), IdentifierNode(name: "hashmap"), IdentifierNode(name: "existingHashmap"),
+            CastNode(), TypeNode(name: ident("HashMap")), IdentifierNode(name: ident("dest")), ArrayAccessNode(), IdentifierNode(name: ident("pair")), DotAccessNode(), IdentifierNode(name: ident("key")),
+          FunctionCallNode(), IdentifierNode(name: ident("merge")), IdentifierNode(name: ident("hashmap")), IdentifierNode(name: ident("existingHashmap")),
         ElseNode(),
-          LocalScopeNode(), IdentifierNode(name: "dest"), ArrayAccessNode(), IdentifierNode(name: "pair"), DotAccessNode(), IdentifierNode(name: "key"),
+          LocalScopeNode(), IdentifierNode(name: ident("dest")), ArrayAccessNode(), IdentifierNode(name: ident("pair")), DotAccessNode(), IdentifierNode(name: ident("key")),
           AssignmentNode(),
-          IdentifierNode(name: "pair"), DotAccessNode(), IdentifierNode(name: "value")
+          IdentifierNode(name: ident("pair")), DotAccessNode(), IdentifierNode(name: ident("value"))
     ])
   }
 
@@ -94,22 +94,26 @@ testable class {
     stream.waitFor("close")
 
     expect(nodes).toBe([
-      ClassNode(), IdentifierNode(name: "Test"),
-      FunctionNode(), IdentifierNode(name: "func"),
-        IdentifierNode(name: "context"), DotAccessNode(), IdentifierNode(name: "currentParsers"), DotAccessNode(), FunctionCallNode(), IdentifierNode(name: "forEach"), LambdaNode(), LocalScopeNode(),
-          LocalDeclarationNode(), IdentifierNode(name: "match"),
+      ClassNode(), IdentifierNode(name: ident("Test")),
+      FunctionNode(), IdentifierNode(name: ident("func")),
+        IdentifierNode(name: ident("context")), DotAccessNode(), IdentifierNode(name: ident("currentParsers")), DotAccessNode(), FunctionCallNode(), IdentifierNode(name: ident("forEach")), LambdaNode(), LocalScopeNode(),
+          LocalDeclarationNode(), IdentifierNode(name: ident("match")),
             AssignmentNode(),
-            IdentifierNode(name: "parser"), DotAccessNode(), FunctionCallNode(), IdentifierNode(name: "match"), IdentifierNode(name: "token"), IdentifierNode(name: "context"),
+            IdentifierNode(name: ident("parser")), DotAccessNode(), FunctionCallNode(), IdentifierNode(name: ident("match")), IdentifierNode(name: ident("token")), IdentifierNode(name: ident("context")),
           IfNode(), PriorityNode(),
-            IdentifierNode(name: "match"), BinaryOperationNode(operator: "!="), NullLiteralNode(),
+            IdentifierNode(name: ident("match")), BinaryOperationNode(operator: sym("!=")), NullLiteralNode(),
           LocalScopeNode(),
-            IdentifierNode(name: "ParseEngine"), DotAccessNode(), IdentifierNode(name: "log"), DotAccessNode(), FunctionCallNode(), IdentifierNode(name: "debugFunc"),
-              LambdaNode(), StringLiteralNode(value: "\"Matched: \#{parser.class.name}\""),
+            IdentifierNode(name: ident("ParseEngine")), DotAccessNode(), IdentifierNode(name: ident("log")), DotAccessNode(), FunctionCallNode(), IdentifierNode(name: ident("debugFunc")),
+              LambdaNode(), StringLiteralNode(value: str("\"Matched: \#{parser.class.name}\"")),
           ElseNode(), IfNode(), PriorityNode(),
-            IdentifierNode(name: "parser"), DotAccessNode(), IdentifierNode(name: "matcher"), DotAccessNode(), IdentifierNode(name: "partial"),
+            IdentifierNode(name: ident("parser")), DotAccessNode(), IdentifierNode(name: ident("matcher")), DotAccessNode(), IdentifierNode(name: ident("partial")),
           LocalScopeNode(),
-            IdentifierNode(name: "ParseEngine"), DotAccessNode(), IdentifierNode(name: "log"), DotAccessNode(), FunctionCallNode(), IdentifierNode(name: "debugFunc"),
-              LambdaNode(), StringLiteralNode(value: "\"Partial match: \#{parser.class.name}\"")
+            IdentifierNode(name: ident("ParseEngine")), DotAccessNode(), IdentifierNode(name: ident("log")), DotAccessNode(), FunctionCallNode(), IdentifierNode(name: ident("debugFunc")),
+              LambdaNode(), StringLiteralNode(value: str("\"Partial match: \#{parser.class.name}\""))
     ])
   }
+
+  ident(String value) => Token(value: value, type: Token.Type.IDENTIFIER)
+  sym(String value) => Token(value: value, type: Token.Type.SYMBOL)
+  str(String value) => Token(value: value, type: Token.Type.STRING)
 }
