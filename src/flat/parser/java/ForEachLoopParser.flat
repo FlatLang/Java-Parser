@@ -2,14 +2,14 @@ package flat/parser/java
 
 import flat/parser
 import flat/parser/matchers
-import flat/ast/ForEachLoopNode
+import flat/ast
 import flat/compiler/models/Token
 import flat/log/Logger
 
 data class extends ParserBase {
   static Logger log = Logger(ForEachLoopParser.class)
 
-  override lazy TokenPattern pattern => GroupTokenPattern([
+  override lazy TokenPattern pattern => GroupTokenPattern<ForEachLoopNode>([
     SingleTokenPattern(type: Token.Type.IDENTIFIER, value: "for"),
     SingleTokenPattern(type: Token.Type.SYMBOL, value: "("),
     NodeTokenPattern([ParameterParser()]),
@@ -27,8 +27,4 @@ data class extends ParserBase {
     FunctionCallParser(),
     InstantiationParser(),
   ]
-
-  override public generateNode() -> ForEachLoopNode {
-    return ForEachLoopNode()
-  }
 }

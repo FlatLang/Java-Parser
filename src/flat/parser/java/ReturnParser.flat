@@ -2,7 +2,7 @@ package flat/parser/java
 
 import flat/parser
 import flat/parser/matchers
-import flat/ast/ReturnNode
+import flat/ast
 import flat/compiler/models/Token
 import flat/log/Logger
 
@@ -13,9 +13,5 @@ data class extends ParserBase {
     :add(LambdaParser())
     :addAll(LocalScopeParser().valueParsers)
 
-  override lazy TokenPattern pattern => SingleTokenPattern(type: Token.Type.IDENTIFIER, value: "return", exact: true)
-
-  override public generateNode() -> ReturnNode {
-    return ReturnNode()
-  }
+  override lazy TokenPattern pattern => SingleTokenPattern<ReturnNode>(type: Token.Type.IDENTIFIER, value: "return", exact: true)
 }

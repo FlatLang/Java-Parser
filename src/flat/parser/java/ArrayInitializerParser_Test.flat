@@ -2,8 +2,7 @@ package flat/parser/java
 
 import flat/parser
 import flat/parser/matchers
-import flat/ast/FileNode
-import flat/ast/AnnotationNode
+import flat/ast
 import flat/annotations/java
 import flat/compiler/models/Token
 import flat/io/File

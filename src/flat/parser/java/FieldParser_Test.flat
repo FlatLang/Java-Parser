@@ -4,8 +4,7 @@ import flat/parser
 import flat/parser/matchers
 import flat/datastruct/HashMap
 import flat/parser/Parser
-import flat/ast/FileNode
-import flat/ast/FieldNode
+import flat/ast
 import flat/compiler/models/Token
 import flat/io/File
 
@@ -24,9 +23,7 @@ testable class {
     ])
 
     expect(parser.generateNode()).toBe(
-      FieldNode(
-        name: "test"
-      )
+      FieldNode()
     )
   }
 
@@ -48,9 +45,7 @@ testable class {
     ])
 
     expect(parser.generateNode()).toBe(
-      FieldNode(
-        name: "test"
-      )
+      FieldNode()
     )
   }
 }

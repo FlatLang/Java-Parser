@@ -4,9 +4,7 @@ import flat/parser
 import flat/parser/matchers
 import flat/datastruct/HashMap
 import flat/parser/Parser
-import flat/ast/FileNode
-import flat/ast/FunctionNode
-import flat/ast/ParameterNode
+import flat/ast
 import flat/compiler/models/Token
 import flat/io/File
 

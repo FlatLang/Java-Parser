@@ -2,7 +2,7 @@ package flat/parser/java
 
 import flat/parser
 import flat/parser/matchers
-import flat/ast/IdentifierNode
+import flat/ast
 import flat/compiler/models/Token
 
 data class extends ParserBase {
@@ -26,15 +26,10 @@ data class extends ParserBase {
     "finally", "strictfp", "while",
   ]
 
-  override lazy TokenPattern pattern => SingleTokenPattern(
+  override lazy TokenPattern pattern => SingleTokenPattern<IdentifierNode>(
     type: Token.Type.IDENTIFIER,
     label: "name",
-    notValues: KEYWORDS
+    notValues: KEYWORDS,
+    field: "name"
   )
-
-  override public generateNode() -> IdentifierNode {
-    return IdentifierNode(
-      name: lastMatch.getValue("name")
-    )
-  }
 }

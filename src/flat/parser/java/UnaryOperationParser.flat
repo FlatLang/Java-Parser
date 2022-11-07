@@ -2,10 +2,7 @@ package flat/parser/java
 
 import flat/parser
 import flat/parser/matchers
-import flat/ast/IdentifierNode
-import flat/ast/FunctionCallNode
-import flat/ast/PriorityNode
-import flat/ast/UnaryOperationNode
+import flat/ast
 import flat/compiler/models/Token
 import flat/log/Logger
 
@@ -24,16 +21,11 @@ data class extends ParserBase {
     PriorityParser(),
   ])
 
-  override lazy TokenPattern pattern => SingleTokenPattern(
+  override lazy TokenPattern pattern => SingleTokenPattern<UnaryOperationNode>(
     type: Token.Type.SYMBOL,
     values: [
       "++", "--", "!", "-"
-    ]
+    ],
+    field: "operator"
   )
-
-  override public generateNode() -> UnaryOperationNode {
-    return UnaryOperationNode(
-      operator: lastMatch.tokens.first.value
-    )
-  }
 }

@@ -2,7 +2,7 @@ package flat/parser/java
 
 import flat/parser
 import flat/parser/matchers
-import flat/ast/AssignmentNode
+import flat/ast
 import flat/compiler/models/Token
 
 data class extends ParserBase {
@@ -21,9 +21,5 @@ data class extends ParserBase {
     LambdaParser(),
   ])
 
-  override lazy TokenPattern pattern => SingleTokenPattern(type: Token.Type.SYMBOL, value: "=")
-
-  override public generateNode() -> AssignmentNode {
-    return AssignmentNode()
-  }
+  override lazy TokenPattern pattern => SingleTokenPattern<AssignmentNode>(type: Token.Type.SYMBOL, value: "=")
 }

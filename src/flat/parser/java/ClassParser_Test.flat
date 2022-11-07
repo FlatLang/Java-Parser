@@ -20,12 +20,10 @@ testable class {
       Token(value: "}", type: Token.Type.SYMBOL),
     ])
 
-    expect(parser.generateNode()).toBe(
-      ClassNode(
-        name: "Bob",
-        implicitName: false
-      )
-    )
+    expect(parser.generateNodes()).toBe([
+      ClassNode(),
+      IdentifierNode(name: "Bob"),
+    ])
   }
 
   test `can match with many implementations`() {

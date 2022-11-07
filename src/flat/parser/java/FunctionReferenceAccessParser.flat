@@ -11,9 +11,5 @@ data class extends ParserBase {
     IdentifierParser(),
   ])
 
-  override lazy TokenPattern pattern => SingleTokenPattern(type: Token.Type.SYMBOL, value: "::", exact: true)
-
-  override public generateNode() -> FunctionReferenceAccessNode {
-    return FunctionReferenceAccessNode()
-  }
+  override lazy TokenPattern pattern => SingleTokenPattern<FunctionReferenceAccessNode>(type: Token.Type.SYMBOL, value: "::", exact: true)
 }

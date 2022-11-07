@@ -2,7 +2,7 @@ package flat/parser/java
 
 import flat/parser
 import flat/parser/matchers
-import flat/ast/BinaryOperationNode
+import flat/ast
 import flat/compiler/models/Token
 
 data class extends ParserBase {
@@ -19,20 +19,18 @@ data class extends ParserBase {
     UnaryOperationParser(),
   ])
 
-  override lazy TokenPattern pattern => XorTokenPattern([
-    SingleTokenPattern(type: Token.Type.SYMBOL, values: [
-      "+", "-", "*", "/", "%",
-      "+=", "-=", "*=", "/=", "%=",
-      "&=", "|=",
-      "!=", "==", "&&", "&", "||", "|",
-      "<", ">", "<=", ">=",
-    ]),
-    SingleTokenPattern(type: Token.Type.IDENTIFIER, value: "instanceof")
+  override lazy TokenPattern pattern => XorTokenPattern<BinaryOperationNode>([
+    SingleTokenPattern(
+      type: Token.Type.SYMBOL,
+      values: [
+        "+", "-", "*", "/", "%",
+        "+=", "-=", "*=", "/=", "%=",
+        "&=", "|=",
+        "!=", "==", "&&", "&", "||", "|",
+        "<", ">", "<=", ">=",
+      ],
+      field: "operator"
+    ),
+    SingleTokenPattern(type: Token.Type.IDENTIFIER, value: "instanceof"),
   ])
-
-  override public generateNode() -> BinaryOperationNode {
-    return BinaryOperationNode(
-      operator: lastMatch.tokens.first.value
-    )
-  }
 }

@@ -2,7 +2,7 @@ package flat/parser/java
 
 import flat/parser
 import flat/parser/matchers
-import flat/ast/CatchNode
+import flat/ast
 import flat/compiler/models/Token
 import flat/log/Logger
 
@@ -12,7 +12,7 @@ data class extends ParserBase {
   override ParserBase[] childParsers => Array()
     :addAll(LocalScopeParser().valueParsers)
 
-  override lazy TokenPattern pattern => GroupTokenPattern([
+  override lazy TokenPattern pattern => GroupTokenPattern<CatchNode>([
     SingleTokenPattern(type: Token.Type.IDENTIFIER, value: "catch"),
     SingleTokenPattern(type: Token.Type.SYMBOL, value: "("),
     GroupTokenPattern([
@@ -29,14 +29,4 @@ data class extends ParserBase {
     AnnotationParser(),
     ParameterParser(),
   ]
-
-  override public generateNode() -> CatchNode {
-    return CatchNode()
-  }
-
-  override public getChildNodeTokenMatches() => NodeTokenMatch[] {
-    if (let params = lastMatch.getMatch<GroupTokenMatch>("parameters")) {
-      return (NodeTokenMatch[])params.tokenMatches.filter({ _.label == "parameter" })
-    }
-  }
 }

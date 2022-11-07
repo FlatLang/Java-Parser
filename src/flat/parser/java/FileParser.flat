@@ -3,10 +3,10 @@ package flat/parser/java
 import flat/parser
 import flat/parser/matchers
 import flat/compiler/models/Token
-import flat/ast/FileNode
+import flat/ast
 
 data class extends ParserBase {
-  override lazy TokenPattern pattern => NodeGroupTokenPattern(
+  override lazy TokenPattern pattern => NodeGroupTokenPattern<FileNode>(
     parsers: [
       AnnotationParser(),
       ImportParser(),
@@ -16,22 +16,4 @@ data class extends ParserBase {
     label: "file_contents",
     statementEndToken: Token(type: Token.Type.SYMBOL, value: ";")
   )
-
-  override public generateNode() -> FileNode {
-    return FileNode(
-      file: context.file
-    )
-  }
-
-  override public generateNodes() -> Node[] {
-    return Array()
-      :add(this.generateNode())
-      :addAll(this.getChildNodeTokenMatches().flatMap({ _.generateNodes() }))
-  }
-
-  override public getChildNodeTokenMatches() => NodeTokenMatch[] {
-    if (let contents = lastMatch.getMatch<NodeGroupTokenMatch>("file_contents")) {
-      return contents.getChildNodeMatches()
-    }
-  }
 }

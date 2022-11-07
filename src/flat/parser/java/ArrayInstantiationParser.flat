@@ -2,7 +2,7 @@ package flat/parser/java
 
 import flat/parser
 import flat/parser/matchers
-import flat/ast/ArrayInstantiationNode
+import flat/ast
 import flat/compiler/models/Token
 
 data class extends ParserBase {
@@ -13,10 +13,12 @@ data class extends ParserBase {
     ArrayInitializerParser(),
   ])
 
-  override lazy TokenPattern pattern => GroupTokenPattern([
+  override lazy TokenPattern pattern => GroupTokenPattern<ArrayInstantiationNode>([
     SingleTokenPattern(type: Token.Type.IDENTIFIER, value: "new"),
-    Patterns.typeName,
-    Patterns.genericParameters,
+    GroupTokenPattern<TypeNode>([
+      SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "type_name", field: "name"),
+      NodeTokenPattern([GenericParametersParser()], optional: true),
+    ], label: "type"),
     GroupTokenPattern([
       SingleTokenPattern(type: Token.Type.SYMBOL, value: "["),
       NodeTokenPattern(sizeParsers, optional: true, label: "size"),
@@ -37,11 +39,4 @@ data class extends ParserBase {
     CastParser(),
     PriorityParser(),
   ]
-
-  override public generateNode() -> ArrayInstantiationNode {
-    return ArrayInstantiationNode(
-      type: lastMatch.getValue("type_name"),
-      arrayDimensions: lastMatch.getMatches("brackets").count
-    )
-  }
 }

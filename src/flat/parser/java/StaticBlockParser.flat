@@ -7,7 +7,7 @@ import flat/annotations/java
 import flat/compiler/models/Token
 
 data class extends ParserBase {
-  override lazy TokenPattern pattern => GroupTokenPattern([
+  override lazy TokenPattern pattern => GroupTokenPattern<StaticBlockNode>([
     PreconditionTokenPattern(annotations: [StaticModifier.class]),
     SingleTokenPattern(type: Token.Type.SYMBOL, value: "{"),
     NodeGroupTokenPattern(
@@ -18,14 +18,4 @@ data class extends ParserBase {
     ),
     SingleTokenPattern(type: Token.Type.SYMBOL, value: "}")
   ], label: "static_block")
-
-  override public generateNode() -> StaticBlockNode {
-    return StaticBlockNode()
-  }
-
-  override public getChildNodeTokenMatches() => NodeTokenMatch[] {
-    if (let body = lastMatch.getMatch<NodeGroupTokenMatch>("scope_body_contents")) {
-      return body.getChildNodeMatches()
-    }
-  }
 }

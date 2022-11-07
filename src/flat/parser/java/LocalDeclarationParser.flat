@@ -2,7 +2,7 @@ package flat/parser/java
 
 import flat/parser
 import flat/parser/matchers
-import flat/ast/LocalDeclarationNode
+import flat/ast
 import flat/compiler/models/Token
 import flat/annotations/java
 
@@ -13,7 +13,7 @@ data class extends ParserBase {
     AssignmentParser()
   ]
 
-  override lazy TokenPattern pattern => XorTokenPattern([
+  override lazy TokenPattern pattern => XorTokenPattern<LocalDeclarationNode>([
     GroupTokenPattern([
       GroupTokenPattern([
         SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "type_name"),
@@ -44,10 +44,4 @@ data class extends ParserBase {
       IdentifierParser().pattern,
     ]),
   ], label: "local_declaration")
-
-  override public generateNode() -> LocalDeclarationNode {
-    return LocalDeclarationNode(
-      name: lastMatch.getValue("name")
-    )
-  }
 }

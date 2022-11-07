@@ -2,7 +2,7 @@ package flat/parser/java
 
 import flat/parser
 import flat/parser/matchers
-import flat/ast/FunctionCallNode
+import flat/ast
 import flat/compiler/models/Token
 import flat/compiler/models/SyntaxTokenFunctions
 
@@ -17,7 +17,7 @@ data class extends ParserBase {
     UnaryOperationParser(),
   ])
 
-  override lazy TokenPattern pattern => GroupTokenPattern([
+  override lazy TokenPattern pattern => GroupTokenPattern<FunctionCallNode>([
     IdentifierParser().pattern,
     Patterns.genericArguments,
     SingleTokenPattern(type: Token.Type.SYMBOL, value: "("),
@@ -46,16 +46,4 @@ data class extends ParserBase {
     CastParser(),
     PriorityParser(),
   ]
-
-  override public generateNode() -> FunctionCallNode {
-    return FunctionCallNode(
-      name: lastMatch.getValue("name")
-    )
-  }
-
-  override public getChildNodeTokenMatches() => NodeTokenMatch[] {
-    if (let args = lastMatch.getMatch<GroupTokenMatch>("arguments")) {
-      return (NodeTokenMatch[])args.tokenMatches.filter({ _.label == "argument" })
-    }
-  }
 }

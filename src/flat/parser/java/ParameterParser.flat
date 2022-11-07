@@ -2,7 +2,7 @@ package flat/parser/java
 
 import flat/parser
 import flat/parser/matchers
-import flat/ast/ParameterNode
+import flat/ast
 import flat/compiler/models/Token
 
 data class extends ParserBase {
@@ -10,7 +10,7 @@ data class extends ParserBase {
     AssignmentParser()
   ])
 
-  override lazy TokenPattern pattern => XorTokenPattern([
+  override lazy TokenPattern pattern => XorTokenPattern<ParameterNode>([
     GroupTokenPattern([
       Patterns.typeName,
       Patterns.genericParameters,
@@ -38,15 +38,4 @@ data class extends ParserBase {
       SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "name"),
     ]),
   ], label: "parameter")
-
-  override public generateNode() -> ParameterNode {
-    let type = lastMatch.getValue("type_name")
-    let name = lastMatch.getValue("name")
-    let bracketCount = lastMatch.getValues("bracket_start").count
-
-    return ParameterNode(
-      name: name,
-      requireName: lastMatch.getValue("require_name") != null
-    )
-  }
 }
