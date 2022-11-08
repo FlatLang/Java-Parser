@@ -31,6 +31,6 @@ data class extends ParserBase {
       ],
       field: "operator"
     ),
-    SingleTokenPattern(type: Token.Type.IDENTIFIER, value: "instanceof"),
+    SingleTokenPattern(type: Token.Type.IDENTIFIER, value: "instanceof", field: "operator"),
   ])
 }
