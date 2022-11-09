@@ -75,9 +75,9 @@ testable class {
           context.currentParsers.forEach((parser) -> {
             TokenMatch match = parser.match(token, context)
             if (match != null) {
-              ParseEngine.log.debugFunc(() -> \"Matched: \#{parser.class.name}\")
+              log.debugFunc(() -> \"Matched: \#{parser.class.name}\")
             } else if (parser.matcher.partial) {
-              ParseEngine.log.debugFunc(() -> \"Partial match: \#{parser.class.name}\")
+              log.debugFunc(() -> \"Partial match: \#{parser.class.name}\")
             }
           })
         }
@@ -103,12 +103,12 @@ testable class {
           IfNode(), PriorityNode(),
             IdentifierNode(name: ident("match")), BinaryOperationNode(operator: sym("!=")), NullLiteralNode(),
           LocalScopeNode(),
-            IdentifierNode(name: ident("ParseEngine")), DotAccessNode(), IdentifierNode(name: ident("log")), DotAccessNode(), FunctionCallNode(), IdentifierNode(name: ident("debugFunc")),
+            IdentifierNode(name: ident("log")), DotAccessNode(), FunctionCallNode(), IdentifierNode(name: ident("debugFunc")),
               LambdaNode(), StringLiteralNode(value: str("\"Matched: \#{parser.class.name}\"")),
           ElseNode(), IfNode(), PriorityNode(),
             IdentifierNode(name: ident("parser")), DotAccessNode(), IdentifierNode(name: ident("matcher")), DotAccessNode(), IdentifierNode(name: ident("partial")),
           LocalScopeNode(),
-            IdentifierNode(name: ident("ParseEngine")), DotAccessNode(), IdentifierNode(name: ident("log")), DotAccessNode(), FunctionCallNode(), IdentifierNode(name: ident("debugFunc")),
+            IdentifierNode(name: ident("log")), DotAccessNode(), FunctionCallNode(), IdentifierNode(name: ident("debugFunc")),
               LambdaNode(), StringLiteralNode(value: str("\"Partial match: \#{parser.class.name}\""))
     ])
   }
