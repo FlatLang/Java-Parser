@@ -10,50 +10,37 @@ import flat/extensions/SyntaxStringFunctions
 
 data class extends ParserBase {
   override lazy TokenPattern pattern => XorTokenPattern([
-    GroupTokenPattern([
+    GroupTokenPattern<PublicModifier>([
       PreconditionTokenPattern(baseParentTypes: PublicModifier.allowedBaseParents, parentTypes: PublicModifier.allowedParents),
-      SingleTokenPattern(type: Token.Type.IDENTIFIER, values: PublicModifier.aliases, label: "alias"),
+      SingleTokenPattern(type: Token.Type.IDENTIFIER, values: PublicModifier.aliases, label: "alias", field: "aliasUsed"),
     ]),
-    GroupTokenPattern([
+    GroupTokenPattern<PrivateModifier>([
       PreconditionTokenPattern(baseParentTypes: PrivateModifier.allowedBaseParents, parentTypes: PrivateModifier.allowedParents),
-      SingleTokenPattern(type: Token.Type.IDENTIFIER, values: PrivateModifier.aliases, label: "alias"),
+      SingleTokenPattern(type: Token.Type.IDENTIFIER, values: PrivateModifier.aliases, label: "alias", field: "aliasUsed"),
     ]),
-    GroupTokenPattern([
+    GroupTokenPattern<ProtectedModifier>([
       PreconditionTokenPattern(baseParentTypes: ProtectedModifier.allowedBaseParents, parentTypes: ProtectedModifier.allowedParents),
-      SingleTokenPattern(type: Token.Type.IDENTIFIER, values: ProtectedModifier.aliases, label: "alias"),
+      SingleTokenPattern(type: Token.Type.IDENTIFIER, values: ProtectedModifier.aliases, label: "alias", field: "aliasUsed"),
     ]),
-    GroupTokenPattern([
+    GroupTokenPattern<StaticModifier>([
       PreconditionTokenPattern(baseParentTypes: StaticModifier.allowedBaseParents, parentTypes: StaticModifier.allowedParents),
-      SingleTokenPattern(type: Token.Type.IDENTIFIER, values: StaticModifier.aliases, label: "alias"),
+      SingleTokenPattern(type: Token.Type.IDENTIFIER, values: StaticModifier.aliases, label: "alias", field: "aliasUsed"),
     ]),
-    GroupTokenPattern([
+    GroupTokenPattern<NativeModifier>([
       PreconditionTokenPattern(baseParentTypes: NativeModifier.allowedBaseParents, parentTypes: NativeModifier.allowedParents),
-      SingleTokenPattern(type: Token.Type.IDENTIFIER, values: NativeModifier.aliases, label: "alias"),
+      SingleTokenPattern(type: Token.Type.IDENTIFIER, values: NativeModifier.aliases, label: "alias", field: "aliasUsed"),
     ]),
-    GroupTokenPattern([
+    GroupTokenPattern<AbstractModifier>([
       PreconditionTokenPattern(baseParentTypes: AbstractModifier.allowedBaseParents, parentTypes: AbstractModifier.allowedParents),
-      SingleTokenPattern(type: Token.Type.IDENTIFIER, values: AbstractModifier.aliases, label: "alias"),
+      SingleTokenPattern(type: Token.Type.IDENTIFIER, values: AbstractModifier.aliases, label: "alias", field: "aliasUsed"),
     ]),
-    GroupTokenPattern([
+    GroupTokenPattern<FinalModifier>([
       PreconditionTokenPattern(baseParentTypes: FinalModifier.allowedBaseParents, parentTypes: FinalModifier.allowedParents),
-      SingleTokenPattern(type: Token.Type.IDENTIFIER, values: FinalModifier.aliases, label: "alias"),
+      SingleTokenPattern(type: Token.Type.IDENTIFIER, values: FinalModifier.aliases, label: "alias", field: "aliasUsed"),
     ]),
-    GroupTokenPattern([
+    GroupTokenPattern<DefaultModifier>([
       PreconditionTokenPattern(baseParentTypes: DefaultModifier.allowedBaseParents, parentTypes: DefaultModifier.allowedParents),
-      SingleTokenPattern(type: Token.Type.IDENTIFIER, values: DefaultModifier.aliases, label: "alias"),
+      SingleTokenPattern(type: Token.Type.IDENTIFIER, values: DefaultModifier.aliases, label: "alias", field: "aliasUsed"),
     ]),
   ], exact: true, metadata: true)
-
-  override public traverseNodes(func(Node, ParseContext, TokenPattern)) {
-    let alias = lastMatch.getValue("alias")
-
-    if (PublicModifier.aliases.any({ _ == alias})) func(PublicModifier(aliasUsed: alias), lastMatch.context, lastMatch.pattern)
-    if (PrivateModifier.aliases.any({ _ == alias})) func(PrivateModifier(aliasUsed: alias), lastMatch.context, lastMatch.pattern)
-    if (ProtectedModifier.aliases.any({ _ == alias})) func(ProtectedModifier(aliasUsed: alias), lastMatch.context, lastMatch.pattern)
-    if (StaticModifier.aliases.any({ _ == alias})) func(StaticModifier(aliasUsed: alias), lastMatch.context, lastMatch.pattern)
-    if (NativeModifier.aliases.any({ _ == alias})) func(NativeModifier(aliasUsed: alias), lastMatch.context, lastMatch.pattern)
-    if (AbstractModifier.aliases.any({ _ == alias})) func(AbstractModifier(aliasUsed: alias), lastMatch.context, lastMatch.pattern)
-    if (FinalModifier.aliases.any({ _ == alias})) func(FinalModifier(aliasUsed: alias), lastMatch.context, lastMatch.pattern)
-    if (DefaultModifier.aliases.any({ _ == alias})) func(DefaultModifier(aliasUsed: alias), lastMatch.context, lastMatch.pattern)
-  }
 }
