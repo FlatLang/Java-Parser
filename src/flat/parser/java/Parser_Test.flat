@@ -40,7 +40,7 @@ testable class {
     stream.waitFor("close")
 
     expect(nodes).toBe([
-      ClassNode(), IdentifierNode(name: ident("Test")),
+      ClassNode(type: Token(value: "class", type: Token.Type.IDENTIFIER)), IdentifierNode(name: ident("Test")),
       FunctionNode(), IdentifierNode(name: ident("func")),
       IdentifierNode(name: ident("source")), DotAccessNode(), FunctionCallNode(), IdentifierNode(name: ident("forEach")), LambdaNode(), LocalScopeNode(),
         IfNode(), PriorityNode(),
@@ -94,7 +94,7 @@ testable class {
     stream.waitFor("close")
 
     expect(nodes).toBe([
-      ClassNode(), IdentifierNode(name: ident("Test")),
+      ClassNode(type: Token(value: "class", type: Token.Type.IDENTIFIER)), IdentifierNode(name: ident("Test")),
       FunctionNode(), IdentifierNode(name: ident("func")),
         IdentifierNode(name: ident("context")), DotAccessNode(), IdentifierNode(name: ident("currentParsers")), DotAccessNode(), FunctionCallNode(), IdentifierNode(name: ident("forEach")), LambdaNode(), LocalScopeNode(),
           LocalDeclarationNode(), IdentifierNode(name: ident("match")),
