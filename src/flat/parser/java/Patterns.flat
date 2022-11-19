@@ -10,7 +10,7 @@ class {
     GroupTokenPattern([
       SingleTokenPattern(type: Token.Type.IDENTIFIER, value: "extends"),
       type
-    ], optional: true, label: "default_generic_parameter_type")
+    ], optional: true)
   ])
 
   visible static lazy TokenPattern genericParameters => GroupTokenPattern([
@@ -22,7 +22,7 @@ class {
     ], repeat: true, optional: true),
     SingleTokenPattern(type: Token.Type.SYMBOL, value: ",", optional: true),
     SingleTokenPattern(type: Token.Type.SYMBOL, value: ">"),
-  ], optional: true, label: "generic_parameters")
+  ], optional: true)
 
   visible static lazy TokenPattern genericArguments => GroupTokenPattern([
     SingleTokenPattern(type: Token.Type.SYMBOL, value: "<"),
@@ -35,7 +35,7 @@ class {
       SingleTokenPattern(type: Token.Type.SYMBOL, value: ",", optional: true),
     ], optional: true),
     SingleTokenPattern(type: Token.Type.SYMBOL, value: ">"),
-  ], optional: true, label: "generic_arguments")
+  ], optional: true)
 
   visible static ParserBase[] switchConditionParsers => [
     AnnotationParser(),
@@ -80,7 +80,7 @@ class {
   ]
 
   visible static lazy TokenPattern switchBody => GroupTokenPattern([
-    NodeTokenPattern(LocalScopeParser().valueParsers, label: "switch_condition"),
+    NodeTokenPattern(LocalScopeParser().valueParsers),
     XorTokenPattern([
       GroupTokenPattern([
         SingleTokenPattern(type: Token.Type.SYMBOL, value: "{"),
@@ -97,13 +97,13 @@ class {
     ]),
   ])
 
-  visible static lazy XorTokenPattern type => XorTokenPattern(Array(), label: "type")
+  visible static lazy XorTokenPattern type => XorTokenPattern(Array())
 
   visible static lazy GroupTokenPattern typeName => GroupTokenPattern([
-    SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "type_name"),
+    SingleTokenPattern(type: Token.Type.IDENTIFIER),
     GroupTokenPattern([
       SingleTokenPattern(type: Token.Type.SYMBOL, value: "."),
-      SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "type_name"),
+      SingleTokenPattern(type: Token.Type.IDENTIFIER),
     ], repeat: true, optional: true),
   ])
 
@@ -111,10 +111,10 @@ class {
     typeName,
     genericParameters,
     GroupTokenPattern([
-      SingleTokenPattern(type: Token.Type.SYMBOL, value: "[", label: "type_bracket_start"),
-      SingleTokenPattern(type: Token.Type.SYMBOL, value: "]", label: "type_bracket_end")
-    ], repeat: true, optional: true, label: "brackets"),
-  ], label: "type")
+      SingleTokenPattern(type: Token.Type.SYMBOL, value: "["),
+      SingleTokenPattern(type: Token.Type.SYMBOL, value: "]")
+    ], repeat: true, optional: true),
+  ])
 
   static lazy TokenPattern[] typeContents => [
     valueType,

@@ -9,23 +9,23 @@ data class extends ParserBase {
   override lazy TokenPattern pattern => GroupTokenPattern<ClassNode>([
     SingleTokenPattern(type: Token.Type.IDENTIFIER, values: ["class", "interface"], field: "type"),
     GroupTokenPattern([
-      SingleTokenPattern<IdentifierNode>(type: Token.Type.IDENTIFIER, label: "class_name", field: "name"),
+      SingleTokenPattern<IdentifierNode>(type: Token.Type.IDENTIFIER, field: "name"),
       Patterns.genericParameters
     ]),
     GroupTokenPattern([
       SingleTokenPattern(type: Token.Type.IDENTIFIER, value: "extends"),
-      SingleTokenPattern<IdentifierNode>(type: Token.Type.IDENTIFIER, label: "name", field: "name"),
+      SingleTokenPattern<IdentifierNode>(type: Token.Type.IDENTIFIER, field: "name"),
       Patterns.genericArguments
-    ], optional: true, label: "extends_class"),
+    ], optional: true),
     GroupTokenPattern([
       SingleTokenPattern(type: Token.Type.IDENTIFIER, value: "implements"),
-      SingleTokenPattern<IdentifierNode>(type: Token.Type.IDENTIFIER, label: "implements_class_name", field: "name"),
+      SingleTokenPattern<IdentifierNode>(type: Token.Type.IDENTIFIER, field: "name"),
       Patterns.genericArguments,
       GroupTokenPattern([
         SingleTokenPattern(type: Token.Type.SYMBOL, value: ","),
-        SingleTokenPattern<IdentifierNode>(type: Token.Type.IDENTIFIER, label: "implements_class_name", field: "name"),
+        SingleTokenPattern<IdentifierNode>(type: Token.Type.IDENTIFIER, field: "name"),
         Patterns.genericArguments
-      ], repeat: true, optional: true, label: "implements_class"),
+      ], repeat: true, optional: true),
       SingleTokenPattern(type: Token.Type.SYMBOL, value: ",", optional: true),
     ], optional: true),
     GroupTokenPattern([
@@ -33,11 +33,11 @@ data class extends ParserBase {
       NodeGroupTokenPattern(
         classBodyParsers,
         optional: true,
-        label: "class_body_contents",
+
         statementEndToken: Token(type: Token.Type.SYMBOL, value: ";")
       ),
       SingleTokenPattern(type: Token.Type.SYMBOL, value: "}")
-    ], label: "class_body")
+    ])
   ])
 
   ParserBase[] classBodyParsers => [

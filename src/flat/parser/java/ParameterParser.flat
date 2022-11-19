@@ -15,27 +15,27 @@ data class extends ParserBase {
       Patterns.typeName,
       Patterns.genericParameters,
       GroupTokenPattern([
-        SingleTokenPattern(type: Token.Type.SYMBOL, value: "[", label: "bracket_start"),
-        SingleTokenPattern(type: Token.Type.SYMBOL, value: "]", label: "bracket_end")
+        SingleTokenPattern(type: Token.Type.SYMBOL, value: "["),
+        SingleTokenPattern(type: Token.Type.SYMBOL, value: "]")
       ], repeat: true),
-      SingleTokenPattern(type: Token.Type.SYMBOL, value: "...", optional: true, label: "varargs"),
-      SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "name")
+      SingleTokenPattern(type: Token.Type.SYMBOL, value: "...", optional: true),
+      SingleTokenPattern(type: Token.Type.IDENTIFIER)
     ]),
     GroupTokenPattern([
       Patterns.typeName,
       Patterns.genericParameters,
-      SingleTokenPattern(type: Token.Type.SYMBOL, value: "...", optional: true, label: "varargs"),
-      SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "name"),
+      SingleTokenPattern(type: Token.Type.SYMBOL, value: "...", optional: true),
+      SingleTokenPattern(type: Token.Type.IDENTIFIER),
       GroupTokenPattern([
-        SingleTokenPattern(type: Token.Type.SYMBOL, value: "[", label: "bracket_start"),
-        SingleTokenPattern(type: Token.Type.SYMBOL, value: "]", label: "bracket_end")
+        SingleTokenPattern(type: Token.Type.SYMBOL, value: "["),
+        SingleTokenPattern(type: Token.Type.SYMBOL, value: "]")
       ], repeat: true),
     ]),
     GroupTokenPattern([
       Patterns.typeName,
       Patterns.genericParameters,
-      SingleTokenPattern(type: Token.Type.SYMBOL, value: "...", optional: true, label: "varargs"),
-      SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "name"),
+      SingleTokenPattern(type: Token.Type.SYMBOL, value: "...", optional: true),
+      SingleTokenPattern(type: Token.Type.IDENTIFIER),
     ]),
-  ], label: "parameter")
+  ])
 }

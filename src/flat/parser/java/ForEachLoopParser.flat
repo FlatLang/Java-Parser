@@ -14,9 +14,9 @@ data class extends ParserBase {
     SingleTokenPattern(type: Token.Type.SYMBOL, value: "("),
     NodeTokenPattern([ParameterParser()]),
     SingleTokenPattern(type: Token.Type.SYMBOL, value: ":"),
-    NodeTokenPattern(iteratorParsers, label: "iterator", greedy: false),
+    NodeTokenPattern(iteratorParsers, greedy: false),
     SingleTokenPattern(type: Token.Type.SYMBOL, value: ")"),
-    NodeTokenPattern(LocalScopeParser().valueParsers, baseParser: true, label: "for_each_loop_body"),
+    NodeTokenPattern(LocalScopeParser().valueParsers, baseParser: true),
   ])
 
   let ParserBase[] iteratorParsers => [

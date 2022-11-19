@@ -13,9 +13,9 @@ data class extends ParserBase {
     NodeGroupTokenPattern(
       LocalScopeParser().valueParsers,
       optional: true,
-      label: "scope_body_contents",
+
       statementEndToken: Token(type: Token.Type.SYMBOL, value: ";")
     ),
     SingleTokenPattern(type: Token.Type.SYMBOL, value: "}")
-  ], label: "static_block")
+  ])
 }

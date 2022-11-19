@@ -16,32 +16,32 @@ data class extends ParserBase {
   override lazy TokenPattern pattern => XorTokenPattern<LocalDeclarationNode>([
     GroupTokenPattern([
       GroupTokenPattern([
-        SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "type_name"),
+        SingleTokenPattern(type: Token.Type.IDENTIFIER),
         Patterns.genericParameters,
       ]),
       GroupTokenPattern([
-        SingleTokenPattern(type: Token.Type.SYMBOL, value: "[", label: "type_bracket_start"),
-        SingleTokenPattern(type: Token.Type.SYMBOL, value: "]", label: "type_bracket_end")
-      ], repeat: true, label: "brackets"),
+        SingleTokenPattern(type: Token.Type.SYMBOL, value: "["),
+        SingleTokenPattern(type: Token.Type.SYMBOL, value: "]")
+      ], repeat: true),
       IdentifierParser().pattern,
     ]),
     GroupTokenPattern([
       GroupTokenPattern([
-        SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "type_name"),
+        SingleTokenPattern(type: Token.Type.IDENTIFIER),
         Patterns.genericParameters,
       ]),
       IdentifierParser().pattern,
       GroupTokenPattern([
-        SingleTokenPattern(type: Token.Type.SYMBOL, value: "[", label: "type_bracket_start"),
-        SingleTokenPattern(type: Token.Type.SYMBOL, value: "]", label: "type_bracket_end")
-      ], repeat: true, label: "brackets"),
+        SingleTokenPattern(type: Token.Type.SYMBOL, value: "["),
+        SingleTokenPattern(type: Token.Type.SYMBOL, value: "]")
+      ], repeat: true),
     ]),
     GroupTokenPattern([
       GroupTokenPattern([
-        SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "type_name"),
+        SingleTokenPattern(type: Token.Type.IDENTIFIER),
         Patterns.genericParameters,
       ]),
       IdentifierParser().pattern,
     ]),
-  ], label: "local_declaration")
+  ])
 }

@@ -16,11 +16,11 @@ data class extends ParserBase {
   ])
 
   override lazy TokenPattern pattern => GroupTokenPattern<ArrayReferenceNode>([
-    SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "type_name"),
+    SingleTokenPattern(type: Token.Type.IDENTIFIER),
     Patterns.genericParameters,
     GroupTokenPattern([
       SingleTokenPattern(type: Token.Type.SYMBOL, value: "["),
       SingleTokenPattern(type: Token.Type.SYMBOL, value: "]"),
     ], repeat: true),
-  ], label: "array_access")
+  ])
 }

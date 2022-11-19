@@ -22,13 +22,13 @@ data class extends ParserBase {
     Patterns.genericArguments,
     SingleTokenPattern(type: Token.Type.SYMBOL, value: "("),
     GroupTokenPattern([
-      NodeTokenPattern(argumentParsers, label: "argument"),
+      NodeTokenPattern(argumentParsers),
       GroupTokenPattern([
         SingleTokenPattern(type: Token.Type.SYMBOL, value: ","),
-        NodeTokenPattern(argumentParsers, label: "argument")
+        NodeTokenPattern(argumentParsers)
       ], optional: true, repeat: true),
       SingleTokenPattern(type: Token.Type.SYMBOL, value: ",", optional: true),
-    ], label: "arguments", optional: true),
+    ], optional: true),
     SingleTokenPattern(type: Token.Type.SYMBOL, value: ")")
   ])
 

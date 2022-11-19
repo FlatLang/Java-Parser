@@ -13,7 +13,7 @@ data class extends ParserBase {
       PackageParser(),
       ClassParser()
     ],
-    label: "file_contents",
+
     statementEndToken: Token(type: Token.Type.SYMBOL, value: ";")
   )
 }

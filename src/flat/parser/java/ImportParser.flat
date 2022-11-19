@@ -12,26 +12,29 @@ data class extends ParserBase {
 
   override lazy TokenPattern pattern => GroupTokenPattern<ImportNode>([
     SingleTokenPattern(type: Token.Type.IDENTIFIER, value: "import"),
-    SingleTokenPattern(type: Token.Type.IDENTIFIER, value: "static", optional: true, label: "import_type", field: "type"),
-    SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "import_location_component"),
+    SingleTokenPattern(type: Token.Type.IDENTIFIER, value: "static", optional: true, field: "type"),
+    SingleTokenPattern(type: Token.Type.IDENTIFIER),
     GroupTokenPattern([
-      SingleTokenPattern(type: Token.Type.SYMBOL, value: ".", label: "import_location_component"),
-      SingleTokenPattern(type: Token.Type.IDENTIFIER, label: "import_location_component")
+      SingleTokenPattern(type: Token.Type.SYMBOL, value: "."),
+      SingleTokenPattern(type: Token.Type.IDENTIFIER)
     ], repeat: true, optional: true),
     GroupTokenPattern([
-      SingleTokenPattern(type: Token.Type.SYMBOL, value: ".", label: "import_location_component"),
-      SingleTokenPattern(type: Token.Type.SYMBOL, value: "*", label: "import_location_component")
+      SingleTokenPattern(type: Token.Type.SYMBOL, value: "."),
+      SingleTokenPattern(type: Token.Type.SYMBOL, value: "*")
     ], optional: true),
   ])
 
   override public traverseNodes(func(Node, ParseContext, TokenPattern)) {
-    let importType = lastMatch.getValue("import_type")
+    let importNode = ImportNode()
+
+    lastMatch.inflateNode(importNode)
+
+    let components = lastMatch.tokens
+      .skip(importNode.type?.value == "static" ? 2 : 1)
+      .map({ _.value })
 
     func(
-      ImportNode(
-        location: lastMatch.getValues("import_location_component").join(),
-        type: importType ? Token(type: Token.Type.IDENTIFIER, value: importType) : null
-      ),
+      importNode.copy(location: components.join()),
       lastMatch.context,
       lastMatch.pattern
     )

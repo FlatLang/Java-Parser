@@ -15,18 +15,8 @@ data class extends ParserBase {
       SingleTokenPattern(type: Token.Type.SYMBOL, value: "@"),
       SingleTokenPattern(type: Token.Type.IDENTIFIER, values: [
         OverrideAnnotation.identifier
-      ], label: "annotation_identifier"),
-    ], label: "traditional_annotation"),
-    NodeTokenPattern([ModifierParser()], label: "modifier"),
-  ], label: "annotation", exact: true, metadata: true)
-
-  override public traverseNodes(func(Node, ParseContext, TokenPattern)) {
-    if (let modifier = lastMatch.getMatch<NodeTokenMatch>("modifier")) {
-      modifier.traverseNodes(func)
-    } else if (let id = lastMatch.getValue("annotation_identifier")) {
-      match id {
-        "Override" => func(OverrideAnnotation(), lastMatch.context, lastMatch.pattern)
-      }
-    }
-  }
+      ]),
+    ]),
+    NodeTokenPattern([ModifierParser()]),
+  ], exact: true, metadata: true)
 }

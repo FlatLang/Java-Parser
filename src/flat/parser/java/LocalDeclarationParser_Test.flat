@@ -24,8 +24,7 @@ testable class {
       Token(value: "test", type: Token.Type.IDENTIFIER)
     ])
 
-    expect(result?.getValue("type_name")).toBe("String")
-    expect(result?.getValue("name")).toBe("test")
+    expect(result).toNotBe(null)
     expect(matcher.partial).toBe(true)
   }
 
@@ -49,9 +48,7 @@ testable class {
       Token(value: "test", type: Token.Type.IDENTIFIER)
     ])
 
-    expect(result?.getValue("type_name")).toBe("String")
-    expect(result?.getMatches("brackets").count).toBe(1)
-    expect(result?.getValue("name")).toBe("test")
+    expect(result).toNotBe(null)
     expect(matcher.partial).toBe(false)
   }
 }
