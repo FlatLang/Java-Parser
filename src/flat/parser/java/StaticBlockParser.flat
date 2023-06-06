@@ -7,15 +7,15 @@ import flat/annotations/java
 import flat/compiler/models/Token
 
 data class extends ParserBase {
-  override lazy TokenPattern pattern => GroupTokenPattern<StaticBlockNode>([
-    PreconditionTokenPattern(annotations: [StaticModifier.class]),
-    SingleTokenPattern(type: Token.Type.SYMBOL, value: "{"),
-    NodeGroupTokenPattern(
-      LocalScopeParser().valueParsers,
-      optional: true,
+    override lazy TokenPattern pattern => GroupTokenPattern<StaticBlockNode>([
+        PreconditionTokenPattern(annotations: [StaticModifier.class]),
+        SingleTokenPattern(type: Token.Type.SYMBOL, value: "{"),
+        NodeGroupTokenPattern(
+            LocalScopeParser().valueParsers,
+            optional: true,
 
-      statementEndToken: Token(type: Token.Type.SYMBOL, value: ";")
-    ),
-    SingleTokenPattern(type: Token.Type.SYMBOL, value: "}")
-  ])
+            statementEndToken: Token(type: Token.Type.SYMBOL, value: ";")
+        ),
+        SingleTokenPattern(type: Token.Type.SYMBOL, value: "}")
+    ])
 }

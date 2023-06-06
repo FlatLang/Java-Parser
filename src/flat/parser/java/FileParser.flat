@@ -6,14 +6,14 @@ import flat/compiler/models/Token
 import flat/ast
 
 data class extends ParserBase {
-  override lazy TokenPattern pattern => NodeGroupTokenPattern<FileNode>(
-    parsers: [
-      AnnotationParser(),
-      ImportParser(),
-      PackageParser(),
-      ClassParser()
-    ],
+    override lazy TokenPattern pattern => NodeGroupTokenPattern<FileNode>(
+        parsers: [
+            AnnotationParser(),
+            ImportParser(),
+            PackageParser(),
+            ClassParser()
+        ],
 
-    statementEndToken: Token(type: Token.Type.SYMBOL, value: ";")
-  )
+        statementEndToken: Token(type: Token.Type.SYMBOL, value: ";")
+    )
 }

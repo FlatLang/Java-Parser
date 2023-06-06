@@ -7,35 +7,35 @@ import flat/compiler/models/Token
 import flat/log/Logger
 
 data class extends ParserBase {
-  static Logger log = Logger(ArrayAccessParser.class)
+    static Logger log = Logger(ArrayAccessParser.class)
 
-  override ParserBase[] childParsers => Array():addAll([
-    DotAccessParser(),
-    FunctionReferenceAccessParser(),
-    TernaryParser(),
-    AssignmentParser(),
-    ArrayAccessParser(),
-    BinaryOperationParser(),
-    UnaryOperationParser(),
-  ])
+    override ParserBase[] childParsers => Array():addAll([
+        DotAccessParser(),
+        FunctionReferenceAccessParser(),
+        TernaryParser(),
+        AssignmentParser(),
+        ArrayAccessParser(),
+        BinaryOperationParser(),
+        UnaryOperationParser(),
+    ])
 
-  override lazy TokenPattern pattern => GroupTokenPattern<ArrayAccessNode>([
-    SingleTokenPattern(type: Token.Type.SYMBOL, value: "["),
-    NodeTokenPattern(indexParsers),
-    SingleTokenPattern(type: Token.Type.SYMBOL, value: "]")
-  ])
+    override lazy TokenPattern pattern => GroupTokenPattern<ArrayAccessNode>([
+        SingleTokenPattern(type: Token.Type.SYMBOL, value: "["),
+        NodeTokenPattern(indexParsers),
+        SingleTokenPattern(type: Token.Type.SYMBOL, value: "]")
+    ])
 
-  ParserBase[] indexParsers => [
-    AnnotationParser(),
-    FunctionCallParser(),
-    InstantiationParser(),
-    ArrayReferenceParser(),
-    IdentifierParser(),
-    ArrayInstantiationParser(),
-    ArrayInitializerParser(),
-    LiteralParser(),
-    UnaryOperationParser(),
-    CastParser(),
-    PriorityParser(),
-  ]
+    ParserBase[] indexParsers => [
+        AnnotationParser(),
+        FunctionCallParser(),
+        InstantiationParser(),
+        ArrayReferenceParser(),
+        IdentifierParser(),
+        ArrayInstantiationParser(),
+        ArrayInitializerParser(),
+        LiteralParser(),
+        UnaryOperationParser(),
+        CastParser(),
+        PriorityParser(),
+    ]
 }
